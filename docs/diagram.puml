@@ -1,0 +1,12 @@
+@startuml
+interface BaseUser
+
+class User {
+    - age
+    - name
+    + User()
+    + void sayHello()
+}
+
+
+@enduml
