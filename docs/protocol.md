@@ -1,10 +1,11 @@
 # Protocol
 
 ## Time tracker
-| Date       | Time spent | Activity                   |
-|------------|------------|----------------------------|
-| 14.09.2022 | 1.5h       | First UML Mockup           |
+| Date       | Time spent | Activity                  |
+|------------|------------|---------------------------|
+| 14.09.2022 | 1.5h       | First UML Mockup          |
 | 15.10.2022 | 2.5h       | HTTP Server implementation |
+| 16.10.2022 | 2h         | First MVC implementation  |
 
 ## Technical steps
 
