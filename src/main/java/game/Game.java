@@ -12,10 +12,16 @@ import server.Request;
 import server.Response;
 import server.ServerApp;
 
+import java.util.Arrays;
+
 public class Game implements ServerApp {
 
+    //CONTROLLER
     @Setter(AccessLevel.PRIVATE)
     private UserController userController;
+
+    public static final String UUID_STRING = "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}";
+
 
     public Game() {
         setUserController(new UserController(new UserView()));
@@ -38,27 +44,46 @@ public class Game implements ServerApp {
     }
 
     private Response handleGET(Request request) {
+        String path = request.getPathname();
 
+        if (path.equals("/users")){
+            return this.userController.getUsers();
+        }
+
+        if (path.matches("/users/" + UUID_STRING)){
+            return this.userController.getUserByUuid(request.getPathname().split("/")[2]);
+        }
+
+        /*
         return switch (request.getPathname()) {
             case "/users" -> this.userController.getUsers();
+            case "/users/".matches()
             default -> new Response(
                     HttpStatus.NOT_FOUND,
                     ContentType.JSON,
                     "{\"error\": \"Not Found\", \"data\": null}"
             );
         };
-    }
-
-    private Response handlePOST(Request request) {
+         */
         return new Response(
                 HttpStatus.NOT_FOUND,
                 ContentType.JSON,
-                "{\"error\": \"Not Found\", \"data\": null}"
+                "{\"error\": \"Not Found\", \"msg\": null}"
         );
     }
 
-    private Response handlePUT(Request request) {
+    private Response handlePOST(Request request) {
+        return switch (request.getPathname()) {
+            case "/users" -> this.userController.registerUser(request.getBody());
+            default -> new Response(
+                    HttpStatus.NOT_FOUND,
+                    ContentType.JSON,
+                    "{\"error\": \"Not Found\", \"msg\": null}"
+            );
+        };
+    }
 
+    private Response handlePUT(Request request) {
         return new Response(
                 HttpStatus.NOT_FOUND,
                 ContentType.JSON,

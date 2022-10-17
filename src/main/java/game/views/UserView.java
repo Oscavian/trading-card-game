@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class UserView extends View {
 
@@ -31,6 +32,7 @@ public class UserView extends View {
     }
 
     public void addUser(User user) {
+        user.setUuid(String.valueOf(UUID.randomUUID()));
         userData.add(user);
     }
 

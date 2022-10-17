@@ -41,4 +41,62 @@ public class UserController extends Controller {
             );
         }
     }
+
+    public Response getUserByUuid(String uuid) {
+        User user = getUserView().getUserByUuid(uuid);
+
+        if (user != null){
+            try {
+                String userDataJSON = getObjectMapper().writeValueAsString(user);
+
+                return new Response(
+                        HttpStatus.OK,
+                        ContentType.JSON,
+                        "\"data\": " + userDataJSON + ", \"error\": null"
+                );
+
+            } catch (JsonProcessingException e){
+                e.printStackTrace();
+
+                return new Response(
+                        HttpStatus.INTERNAL_SERVER_ERROR,
+                        ContentType.JSON,
+                        "\"error\": \"Internal Server Error\", \"data\": null"
+                );
+            }
+        } else {
+            return new Response(
+                    HttpStatus.NOT_FOUND,
+                    ContentType.JSON,
+                    "\"data\": null, \"error\": UUID Not found"
+            );
+        }
+
+    }
+
+    public Response registerUser(String body) {
+        User newUser;
+
+        try {
+            newUser = getObjectMapper().readValue(body, User.class);
+            getUserView().addUser(newUser);
+
+            return new Response(
+                    HttpStatus.OK,
+                    ContentType.JSON,
+                    "{\"msg\": \"success\"}"
+            );
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+
+            return new Response(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    ContentType.JSON,
+                    "\"error\": \"Internal Server Error\", \"data\": null"
+            );
+        }
+
+
+
+    }
 }
