@@ -36,46 +36,18 @@ public class Server {
 
     public void start() throws IOException {
         setServerSocket(new ServerSocket(getPort()));
-        run();
-    }
-
-    public void run() {
-        while (true) {
+        while(true) {
             try {
-                setClientSocket(getServerSocket().accept());
-                setInputStream(new BufferedReader(new InputStreamReader(clientSocket.getInputStream())));
-                setRequest(new Request(getInputStream()));
-                setOutputStream(new PrintWriter(clientSocket.getOutputStream(), false));
-
-                if (request.getPathname() == null) {
-                    setResponse(new Response(
-                            HttpStatus.BAD_REQUEST,
-                            ContentType.TEXT,
-                            "No resource specified!"
-                    ));
-                } else {
-                    setResponse(getGame().handleRequest(request));
-                }
-
-                getOutputStream().write(getResponse().build());
+                Socket clientSocket = getServerSocket().accept();
+                RequestHandler requestHandler = new RequestHandler(getGame(), clientSocket);
+                Thread th = new Thread(requestHandler);
+                th.start();
 
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                try {
-                    if (getOutputStream() != null) {
-                        getOutputStream().close();
-                    }
-
-                    if (getInputStream() != null) {
-                        getInputStream().close();
-                        getClientSocket().close();
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         }
+
+
     }
 }

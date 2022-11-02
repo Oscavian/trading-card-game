@@ -1,18 +1,14 @@
 package game;
 
 import game.controllers.UserController;
-import game.models.User;
-import game.views.UserView;
+import game.services.UserService;
 import http.ContentType;
 import http.HttpStatus;
 import lombok.AccessLevel;
 import lombok.Setter;
-import lombok.experimental.StandardException;
 import server.Request;
 import server.Response;
 import server.ServerApp;
-
-import java.util.Arrays;
 
 public class Game implements ServerApp {
 
@@ -24,7 +20,7 @@ public class Game implements ServerApp {
 
 
     public Game() {
-        setUserController(new UserController(new UserView()));
+        setUserController(new UserController(new UserService()));
     }
 
     @Override

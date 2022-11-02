@@ -2,34 +2,34 @@ package game.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import game.models.User;
-import game.views.UserView;
+import game.services.UserService;
 import http.ContentType;
 import http.HttpStatus;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import server.Response;
 
 import java.util.List;
+import java.util.UUID;
 
 public class UserController extends Controller {
 
     @Setter
     @Getter
-    private UserView userView;
+    private UserService userService;
 
-    public UserController(UserView userView){
-        setUserView(userView);
+    public UserController(UserService userService){
+        setUserService(userService);
     }
 
     public Response getUsers() {
-        List<User> userData = getUserView().getUsers();
+        List<User> userData = getUserService().getUsers();
         try {
             String userDataJSON = getObjectMapper().writeValueAsString(userData);
             return new Response(
                     HttpStatus.OK,
                     ContentType.JSON,
-                    "\"data\": " + userDataJSON + ", \"error\": null"
+                    "{\"data\": " + userDataJSON + ", \"error\": null}"
             );
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -37,22 +37,21 @@ public class UserController extends Controller {
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     ContentType.JSON,
-                    "\"error\": \"Internal Server Error\", \"data\": null"
+                    "{\"error\": \"Internal Server Error\", \"data\": null}"
             );
         }
     }
 
     public Response getUserByUuid(String uuid) {
-        User user = getUserView().getUserByUuid(uuid);
+        User user = getUserService().getUserByUuid(UUID.fromString(uuid));
 
         if (user != null){
             try {
                 String userDataJSON = getObjectMapper().writeValueAsString(user);
-
                 return new Response(
                         HttpStatus.OK,
                         ContentType.JSON,
-                        "\"data\": " + userDataJSON + ", \"error\": null"
+                        "{\"data\": " + userDataJSON + ", \"error\": null}"
                 );
 
             } catch (JsonProcessingException e){
@@ -61,14 +60,14 @@ public class UserController extends Controller {
                 return new Response(
                         HttpStatus.INTERNAL_SERVER_ERROR,
                         ContentType.JSON,
-                        "\"error\": \"Internal Server Error\", \"data\": null"
+                        "{\"error\": \"Internal Server Error\", \"data\": null}"
                 );
             }
         } else {
             return new Response(
                     HttpStatus.NOT_FOUND,
                     ContentType.JSON,
-                    "\"data\": null, \"error\": UUID Not found"
+                    "{\"data\": null, \"error\": \"UUID Not found\"}"
             );
         }
 
@@ -79,12 +78,12 @@ public class UserController extends Controller {
 
         try {
             newUser = getObjectMapper().readValue(body, User.class);
-            getUserView().addUser(newUser);
+            newUser = getUserService().addUser(newUser);
 
             return new Response(
                     HttpStatus.OK,
                     ContentType.JSON,
-                    "{\"msg\": \"success\"}"
+                    "{\"error\": \"null\", \"uuid\":\"" + newUser.getUuid().toString() + "\"}"
             );
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -92,7 +91,7 @@ public class UserController extends Controller {
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     ContentType.JSON,
-                    "\"error\": \"Internal Server Error\", \"data\": null"
+                    "{\"error\": \"Internal Server Error\", \"data\": null}"
             );
         }
 

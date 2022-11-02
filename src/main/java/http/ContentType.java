@@ -13,7 +13,7 @@ public enum ContentType {
     @Setter(AccessLevel.PRIVATE)
     private String name;
 
-    ContentType(String name){
+    ContentType(String name) {
         setName(name);
     }
 }
