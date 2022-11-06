@@ -32,7 +32,7 @@ abstract class CardBase {
     - name : String
     - damage : final int
     - element : Element
-
+    __Methods__
     CardBase(String name, Element element, int damage)
     {abstract} void attack()
 }
@@ -75,6 +75,12 @@ class Battle {
 class Shop {
     packages : ArrayList<Package>
 }
+
+class DataHandler {
+
+}
+
+
 
 enum Element {
     WATER

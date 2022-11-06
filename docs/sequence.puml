@@ -1,0 +1,6 @@
+@startuml
+
+User -> Deck
+User -> Stack
+
+@enduml
