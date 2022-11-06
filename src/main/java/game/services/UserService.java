@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class UserService extends View {
+public class UserService extends Service {
 
     @Setter(AccessLevel.PRIVATE)
     private List<User> userData;
