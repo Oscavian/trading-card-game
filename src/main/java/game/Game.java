@@ -33,7 +33,8 @@ public class Game implements ServerApp {
             case DELETE -> handleDELETE(request);
             default -> new Response(
                     HttpStatus.METHOD_NOT_ALLOWED,
-                    ContentType.TEXT,
+                    ContentType.JSON,
+                    null,
                     "Method not allowed, use GET, POST, PUT or DELETE"
             );
         };
@@ -64,7 +65,8 @@ public class Game implements ServerApp {
         return new Response(
                 HttpStatus.NOT_FOUND,
                 ContentType.JSON,
-                "{\"error\": \"Not Found\", \"msg\": null}"
+                null,
+                "Not found"
         );
     }
 
@@ -74,7 +76,8 @@ public class Game implements ServerApp {
             default -> new Response(
                     HttpStatus.NOT_FOUND,
                     ContentType.JSON,
-                    "{\"error\": \"Not Found\", \"msg\": null}"
+                    null,
+                    "Not found"
             );
         };
     }
@@ -83,7 +86,8 @@ public class Game implements ServerApp {
         return new Response(
                 HttpStatus.NOT_FOUND,
                 ContentType.JSON,
-                "{\"error\": \"Not Found\", \"data\": null}"
+                null,
+                "Not found"
         );
     }
 
@@ -91,7 +95,8 @@ public class Game implements ServerApp {
         return new Response(
                 HttpStatus.NOT_FOUND,
                 ContentType.JSON,
-                "{\"error\": \"Not Found\", \"data\": null}"
+                null,
+                "Not found"
         );
     }
 }

@@ -61,6 +61,7 @@ public class RequestHandler implements Runnable {
             return new Response(
                     HttpStatus.BAD_REQUEST,
                     ContentType.TEXT,
+                    null,
                     "No resource specified!"
             );
         } else {

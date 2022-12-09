@@ -29,7 +29,8 @@ public class UserController extends Controller {
             return new Response(
                     HttpStatus.OK,
                     ContentType.JSON,
-                    "{\"data\": " + userDataJSON + ", \"error\": null}"
+                    userDataJSON,
+                    "Data retrieved."
             );
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -37,7 +38,8 @@ public class UserController extends Controller {
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     ContentType.JSON,
-                    "{\"error\": \"Internal Server Error\", \"data\": null}"
+                    null,
+                    "Internal Server error"
             );
         }
     }
@@ -51,7 +53,8 @@ public class UserController extends Controller {
                 return new Response(
                         HttpStatus.OK,
                         ContentType.JSON,
-                        "{\"data\": " + userDataJSON + ", \"error\": null}"
+                        userDataJSON,
+                        "Data retrieved."
                 );
 
             } catch (JsonProcessingException e){
@@ -60,14 +63,16 @@ public class UserController extends Controller {
                 return new Response(
                         HttpStatus.INTERNAL_SERVER_ERROR,
                         ContentType.JSON,
-                        "{\"error\": \"Internal Server Error\", \"data\": null}"
+                        null,
+                        "Internal Server Error"
                 );
             }
         } else {
             return new Response(
                     HttpStatus.NOT_FOUND,
                     ContentType.JSON,
-                    "{\"data\": null, \"error\": \"UUID Not found\"}"
+                    null,
+                    "UUID not found"
             );
         }
 
@@ -80,10 +85,14 @@ public class UserController extends Controller {
             newUser = getObjectMapper().readValue(body, User.class);
             newUser = getUserService().addUser(newUser);
 
+            String uuid = getObjectMapper().writeValueAsString(newUser.getUuid());
+
             return new Response(
-                    HttpStatus.OK,
+                    HttpStatus.CREATED,
                     ContentType.JSON,
-                    "{\"error\": \"null\", \"uuid\":\"" + newUser.getUuid().toString() + "\"}"
+                    uuid,
+                    "User successfully created"
+
             );
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -91,7 +100,9 @@ public class UserController extends Controller {
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     ContentType.JSON,
-                    "{\"error\": \"Internal Server Error\", \"data\": null}"
+                    null,
+                    "Internal Server error"
+
             );
         }
 
