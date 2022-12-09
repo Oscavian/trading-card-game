@@ -1,6 +1,6 @@
 package game.dao;
 
-import game.models.User;
+import game.models.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,24 +22,22 @@ public class UserDao implements Dao<User> {
 
     @Override
     public User create(User user) throws SQLException {
-        String query = "INSERT INTO users (username, password, elo) VALUES (?,?,?)";
+        String query = "INSERT INTO users (username, password) VALUES (?,?)";
 
         PreparedStatement statement = getConnection().prepareStatement(query);
         statement.setString(1, user.getUsername());
         statement.setString(2, user.getPassword());
-        statement.setInt(3, user.getElo());
 
         ResultSet res = statement.executeQuery();
 
-        user.setUuid(UUID.fromString(res.getString(1)));
-
+        user.setId(UUID.fromString(res.getString(1)));
         return user;
     }
 
     @Override
     public ArrayList<User> read() throws SQLException {
 
-        String query = "SELECT uuid, username, password, elo from users";
+        String query = "SELECT uuid, username, password, bio, image, elo, wins, losses from users";
 
         PreparedStatement statement = getConnection().prepareStatement(query);
 
@@ -52,7 +50,11 @@ public class UserDao implements Dao<User> {
                     UUID.fromString(resultSet.getString("uuid")),
                     resultSet.getString("username"),
                     resultSet.getString("password"),
-                    resultSet.getInt("elo")
+                    resultSet.getString("bio"),
+                    resultSet.getString("image"),
+                    resultSet.getInt("elo"),
+                    resultSet.getInt("wins"),
+                    resultSet.getInt("losses")
             );
 
             list.add(user);
@@ -66,15 +68,23 @@ public class UserDao implements Dao<User> {
         String query = "UPDATE users SET" +
                         "username = ?," +
                         "password = ?," +
+                        "bio = ?" +
+                        "image = ?" +
                         "elo = ?" +
+                        "wins = ?" +
+                        "losses = ?" +
                 "WHERE uuid = ?";
 
         PreparedStatement statement = getConnection().prepareStatement(query);
 
         statement.setString(1, user.getUsername());
         statement.setString(2, user.getPassword());
-        statement.setInt(3, user.getElo());
-        statement.setString(4, user.getUuid().toString());
+        statement.setString(3, user.getBio());
+        statement.setString(4, user.getImage());
+        statement.setInt(5, user.getElo());
+        statement.setInt(6, user.getWins());
+        statement.setInt(7, user.getLosses());
+        statement.setString(8, user.getId().toString());
 
         statement.execute();
     }
@@ -85,7 +95,7 @@ public class UserDao implements Dao<User> {
 
         PreparedStatement statement = getConnection().prepareStatement(query);
 
-        statement.setString(1, user.getUuid().toString());
+        statement.setString(1, user.getId().toString());
 
         statement.execute();
     }

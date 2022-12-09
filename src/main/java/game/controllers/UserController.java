@@ -1,8 +1,11 @@
 package game.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import game.models.User;
-import game.services.UserService;
+import game.models.user.User;
+import game.models.user.UserCredentials;
+import game.models.user.UserData;
+import game.repos.UserRepo;
+import game.services.DatabaseService;
 import http.ContentType;
 import http.HttpStatus;
 import lombok.Getter;
@@ -16,14 +19,18 @@ public class UserController extends Controller {
 
     @Setter
     @Getter
-    private UserService userService;
+    private UserRepo userRepo;
 
-    public UserController(UserService userService){
-        setUserService(userService);
+    public UserController(UserRepo userRepo){
+        setUserRepo(userRepo);
     }
 
+    /**
+     * GET /users
+     * *Temporary*
+     */
     public Response getUsers() {
-        List<User> userData = getUserService().getUsers();
+        List<UserData> userData = getUserRepo().getAllUserData();
         try {
             String userDataJSON = getObjectMapper().writeValueAsString(userData);
             return new Response(
@@ -44,8 +51,13 @@ public class UserController extends Controller {
         }
     }
 
-    public Response getUserByUuid(String uuid) {
-        User user = getUserService().getUserByUuid(UUID.fromString(uuid));
+    /**
+     * GET /users/{username}
+     * @param name
+     * @return
+     */
+    public Response getUserByName(String name) {
+        UserData user = getUserRepo().getByName(name);
 
         if (user != null){
             try {
@@ -78,22 +90,35 @@ public class UserController extends Controller {
 
     }
 
+    /**
+     * POST /users
+     * @param body
+     * @return
+     */
     public Response registerUser(String body) {
         User newUser;
-
         try {
-            newUser = getObjectMapper().readValue(body, User.class);
-            newUser = getUserService().addUser(newUser);
+            newUser = getUserRepo().addUser(getObjectMapper().readValue(body, UserCredentials.class));
 
-            String uuid = getObjectMapper().writeValueAsString(newUser.getUuid());
+            if (newUser != null) {
+                String uuid = getObjectMapper().writeValueAsString(newUser.getId());
+                return new Response(
+                        HttpStatus.CREATED,
+                        ContentType.JSON,
+                        uuid,
+                        "User successfully created"
+                );
 
-            return new Response(
-                    HttpStatus.CREATED,
-                    ContentType.JSON,
-                    uuid,
-                    "User successfully created"
+            } else {
+                return new Response(
+                        HttpStatus.CONFLICT,
+                        ContentType.JSON,
+                        null,
+                        "User with same username already registered"
+                );
+            }
 
-            );
+
         } catch (JsonProcessingException e) {
             e.printStackTrace();
 
@@ -102,7 +127,6 @@ public class UserController extends Controller {
                     ContentType.JSON,
                     null,
                     "Internal Server error"
-
             );
         }
 

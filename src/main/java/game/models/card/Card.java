@@ -7,19 +7,24 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 
 @Getter
-@Setter(AccessLevel.PRIVATE)
+@Setter
 @AllArgsConstructor
-public abstract class CardBase {
+public class Card {
 
-    @JsonAlias({"name"})
+    @JsonAlias({"Id"})
+    private UUID id;
+
+    @JsonAlias({"Name"})
     private String name;
-    @JsonAlias({"damage"})
-    private int damage;
-    @JsonAlias({"element"})
+    @JsonAlias({"Damage"})
+    private float damage;
+    @JsonAlias({"Element"})
     private Element element;
 
-    CardBase(){}
+    Card(){}
 
 }

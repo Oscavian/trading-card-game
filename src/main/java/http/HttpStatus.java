@@ -10,7 +10,9 @@ public enum HttpStatus {
     INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
     NOT_FOUND(404, "Not Found"),
     CREATED(201, "Created"),
-    METHOD_NOT_ALLOWED(405, "Method not allowed");
+    METHOD_NOT_ALLOWED(405, "Method not allowed"),
+
+    CONFLICT(409, "Conflict");
 
     @Getter
     @Setter(AccessLevel.PRIVATE)

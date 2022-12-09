@@ -10,14 +10,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseService extends Service {
-    @Getter(AccessLevel.PRIVATE)
-    private final Connection connection;
+    @Getter(AccessLevel.PUBLIC)
+    private Connection connection;
 
-    public DatabaseService() throws SQLException {
-        this.connection = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432",
-                "",
-                ""
-        );
+    public DatabaseService() {
+        try {
+            this.connection = DriverManager.getConnection(
+                    "jdbc:postgresql://localhost:5431/",
+                    "swe1user",
+                    "swe1pw"
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -8,6 +8,7 @@
 | 16.10.2022 | 2h         | First MVC implementation               |
  | 18.10.2022 | 1.5h       | First POST request, second GET request |
 | 25.10.2022 | 1h         | Make server multithreaded              |
+| 09.12.2022 | 5h         | Implement first DAOs and Repos         |
 
 ## Technical steps
 

@@ -1,6 +1,6 @@
 package game.services;
 
-import game.models.User;
+import game.models.user.UserData;
 import lombok.AccessLevel;
 import lombok.Setter;
 
@@ -10,34 +10,34 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class UserService extends Service {
-
+    /*
     @Setter(AccessLevel.PRIVATE)
     private List<User> userData;
 
     public UserService() {
         setUserData(new ArrayList<>());
-        userData.add(new User(UUID.fromString("a62e69b8-f6b4-40e0-9ff8-aceb80a40f17"), "admin", "admin", 1000));
-        userData.add(new User(UUID.fromString("cdaf29ff-c68d-45c4-8a7e-86f49d537e4f"), "user", "123456", 500));
+        userData.add(new UserData("oskar", "hi there!", "B-)"));
+        userData.add(new UserData("kekl", "I'm superior!", "^o^"));
     }
 
-    public User getUserByUuid(UUID uuid){
+    public UserData getUserByName(String name){
         return userData.stream()
-                .filter(user -> Objects.equals(uuid, user.getUuid()))
+                .filter(user -> Objects.equals(name, user.getUsername()))
                 .findAny()
                 .orElse(null);
     }
 
-    public List<User> getUsers() {
+    public List<UserData> getUsers() {
         return userData;
     }
 
-    public User addUser(User user) {
-        user.setUuid(UUID.randomUUID());
+    public UserData addUser(UserData user) {
         userData.add(user);
         return user;
     }
 
-    public void removeUser(UUID uuid) {
-        userData.removeIf(user -> Objects.equals(uuid, user.getUuid()));
+    public void removeUser(String name) {
+        userData.removeIf(user -> Objects.equals(name, user.getUsername()));
     }
+    */
 }

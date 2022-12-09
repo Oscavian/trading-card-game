@@ -1,7 +1,9 @@
 package game.repos;
 
 import game.dao.UserDao;
-import game.models.User;
+import game.models.user.User;
+import game.models.user.UserCredentials;
+import game.models.user.UserData;
 import game.services.DatabaseService;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,27 +23,71 @@ public class UserRepo {
         setUserDao(userDao);
     }
 
-    public ArrayList<User> getAll() {
-        if (!userCache.isEmpty()) {
-            return getUserCache();
+    public ArrayList<UserData> getAllUserData() {
+        checkCache();
+        refreshCache();
+
+        var userData = new ArrayList<UserData>();
+
+        for(var user : userCache) {
+            userData.add(user.getUserData());
+        }
+
+        return userData;
+    }
+
+    public UserData getByName(String name) {
+        checkCache();
+
+        User user = userCache.stream()
+                .filter(user1 -> name.equals(user1.getUsername()))
+                .findAny()
+                .orElse(null);
+
+        if (user != null) {
+            return user.getUserData();
+        } else {
+            return null;
+        }
+    }
+
+    public User addUser(UserCredentials credentials) {
+        User newUser = null;
+
+        refreshCache();
+
+        if (userCache.stream()
+                .filter(user -> credentials.getUsername().equals(user.getUsername()))
+                .findAny()
+                .orElse(null) != null) {
+            return null;
         }
 
         try {
-            //CityRepo cityRepo = new CityRepo(new CityDao(new DbService().getConnection()));
+            newUser = getUserDao().create(new User(credentials));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        refreshCache();
+        return newUser;
+    }
 
-            //ArrayList<City> cities = cityRepo.getAll();
+    private void checkCache() {
+        if (userCache.isEmpty()) {
+            try {
+                setUserCache(getUserDao().read());
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
 
-
+    private void refreshCache() {
+        try {
             setUserCache(getUserDao().read());
         } catch (SQLException e){
             e.printStackTrace();
         }
-
-        return getUserCache();
-    }
-
-    public User getById() {
-        return null;
     }
 
 

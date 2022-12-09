@@ -1,6 +1,9 @@
 package game;
 
 import game.controllers.UserController;
+import game.dao.UserDao;
+import game.repos.UserRepo;
+import game.services.DatabaseService;
 import game.services.UserService;
 import http.ContentType;
 import http.HttpStatus;
@@ -10,17 +13,22 @@ import server.Request;
 import server.Response;
 import server.ServerApp;
 
+import java.sql.SQLException;
+
 public class Game implements ServerApp {
+
+
 
     //CONTROLLER
     @Setter(AccessLevel.PRIVATE)
     private UserController userController;
-
+    @Setter(AccessLevel.PRIVATE)
+    private DatabaseService databaseService = new DatabaseService();
     public static final String UUID_STRING = "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}";
 
 
     public Game() {
-        setUserController(new UserController(new UserService()));
+        setUserController(new UserController(new UserRepo(new UserDao(databaseService.getConnection()))));
     }
 
     @Override
@@ -47,9 +55,11 @@ public class Game implements ServerApp {
             return this.userController.getUsers();
         }
 
+        /*
         if (path.matches("/users/" + UUID_STRING)){
             return this.userController.getUserByUuid(request.getPathname().split("/")[2]);
         }
+        */
 
         /*
         return switch (request.getPathname()) {
