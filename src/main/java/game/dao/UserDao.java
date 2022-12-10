@@ -22,7 +22,7 @@ public class UserDao implements Dao<User> {
 
     @Override
     public User create(User user) throws SQLException {
-        String query = "INSERT INTO users (username, password) VALUES (?,?)";
+        String query = "INSERT INTO users (username, password) VALUES (?,?) RETURNING uuid";
 
         PreparedStatement statement = getConnection().prepareStatement(query);
         statement.setString(1, user.getUsername());
@@ -30,14 +30,18 @@ public class UserDao implements Dao<User> {
 
         ResultSet res = statement.executeQuery();
 
-        user.setId(UUID.fromString(res.getString(1)));
-        return user;
+        if (res.next()){
+            user.setId(UUID.fromString(res.getString(1)));
+            return user;
+        } else {
+            return null;
+        }
     }
 
     @Override
     public ArrayList<User> read() throws SQLException {
 
-        String query = "SELECT uuid, username, password, bio, image, elo, wins, losses from users";
+        String query = "SELECT uuid, username, password, bio, image, elo, wins, losses from users;";
 
         PreparedStatement statement = getConnection().prepareStatement(query);
 
@@ -86,7 +90,7 @@ public class UserDao implements Dao<User> {
         statement.setInt(7, user.getLosses());
         statement.setString(8, user.getId().toString());
 
-        statement.execute();
+        statement.executeUpdate();
     }
 
     @Override
@@ -97,6 +101,6 @@ public class UserDao implements Dao<User> {
 
         statement.setString(1, user.getId().toString());
 
-        statement.execute();
+        statement.executeUpdate();
     }
 }

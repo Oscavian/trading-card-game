@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserStats {
 
-    @JsonAlias({"Name"})
+    @JsonAlias({"Username"})
     private String username;
 
     @JsonAlias({"Elo"})

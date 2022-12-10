@@ -4,7 +4,6 @@ import game.dao.UserDao;
 import game.models.user.User;
 import game.models.user.UserCredentials;
 import game.models.user.UserData;
-import game.services.DatabaseService;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -68,6 +67,7 @@ public class UserRepo {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         refreshCache();
         return newUser;
     }

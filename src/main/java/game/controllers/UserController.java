@@ -5,7 +5,6 @@ import game.models.user.User;
 import game.models.user.UserCredentials;
 import game.models.user.UserData;
 import game.repos.UserRepo;
-import game.services.DatabaseService;
 import http.ContentType;
 import http.HttpStatus;
 import lombok.Getter;
@@ -13,7 +12,6 @@ import lombok.Setter;
 import server.Response;
 
 import java.util.List;
-import java.util.UUID;
 
 public class UserController extends Controller {
 
@@ -53,8 +51,8 @@ public class UserController extends Controller {
 
     /**
      * GET /users/{username}
-     * @param name
-     * @return
+     * TODO: auth (401)
+     *
      */
     public Response getUserByName(String name) {
         UserData user = getUserRepo().getByName(name);
@@ -92,8 +90,7 @@ public class UserController extends Controller {
 
     /**
      * POST /users
-     * @param body
-     * @return
+     *
      */
     public Response registerUser(String body) {
         User newUser;

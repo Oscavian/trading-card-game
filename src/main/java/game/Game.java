@@ -4,7 +4,6 @@ import game.controllers.UserController;
 import game.dao.UserDao;
 import game.repos.UserRepo;
 import game.services.DatabaseService;
-import game.services.UserService;
 import http.ContentType;
 import http.HttpStatus;
 import lombok.AccessLevel;
@@ -13,7 +12,6 @@ import server.Request;
 import server.Response;
 import server.ServerApp;
 
-import java.sql.SQLException;
 
 public class Game implements ServerApp {
 
@@ -24,8 +22,6 @@ public class Game implements ServerApp {
     private UserController userController;
     @Setter(AccessLevel.PRIVATE)
     private DatabaseService databaseService = new DatabaseService();
-    public static final String UUID_STRING = "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}";
-
 
     public Game() {
         setUserController(new UserController(new UserRepo(new UserDao(databaseService.getConnection()))));
@@ -51,27 +47,15 @@ public class Game implements ServerApp {
     private Response handleGET(Request request) {
         String path = request.getPathname();
 
-        if (path.equals("/users")){
+        if (path.matches("/users/?")){
             return this.userController.getUsers();
         }
 
-        /*
-        if (path.matches("/users/" + UUID_STRING)){
-            return this.userController.getUserByUuid(request.getPathname().split("/")[2]);
+        if (path.matches("/users/[A-Za-z0-9]+/?")) {
+            return this.userController.getUserByName(request.getPathname().split("/")[2]);
         }
-        */
 
-        /*
-        return switch (request.getPathname()) {
-            case "/users" -> this.userController.getUsers();
-            case "/users/".matches()
-            default -> new Response(
-                    HttpStatus.NOT_FOUND,
-                    ContentType.JSON,
-                    "{\"error\": \"Not Found\", \"data\": null}"
-            );
-        };
-         */
+
         return new Response(
                 HttpStatus.NOT_FOUND,
                 ContentType.JSON,
@@ -93,6 +77,8 @@ public class Game implements ServerApp {
     }
 
     private Response handlePUT(Request request) {
+
+
         return new Response(
                 HttpStatus.NOT_FOUND,
                 ContentType.JSON,

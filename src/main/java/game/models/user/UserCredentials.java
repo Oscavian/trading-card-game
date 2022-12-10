@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserCredentials {
 
-    @JsonAlias({"Name"})
+    @JsonAlias({"Username"})
     private String username;
     @JsonAlias({"Password"})
     private String password;
