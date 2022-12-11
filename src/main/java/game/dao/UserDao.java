@@ -69,26 +69,72 @@ public class UserDao implements Dao<User> {
 
     @Override
     public void update(User user) throws SQLException {
+        /*
         String query = "UPDATE users SET" +
                         "username = ?," +
                         "password = ?," +
-                        "bio = ?" +
-                        "image = ?" +
-                        "elo = ?" +
-                        "wins = ?" +
-                        "losses = ?" +
+                        "bio = ?," +
+                        "image = ?," +
+                        "elo = ?," +
+                        "wins = ?," +
+                        "losses = ?," +
                 "WHERE uuid = ?";
+
+         */
+
+        var params = new ArrayList<String>();
+
+        if (!user.getPassword().isEmpty()){
+            params.add("password = ?");
+        }
+        if (!user.getBio().isEmpty()) {
+            params.add("bio = ?");
+        }
+        if (!user.getImage().isEmpty()) {
+            params.add("image = ?");
+        }
+        if (user.getElo() != 0){
+            params.add("elo = ?");
+        }
+        if (user.getWins() != 0) {
+            params.add("wins = ?");
+        }
+        if (user.getLosses() != 0) {
+            params.add("losses = ?");
+        }
+
+        if (params.isEmpty()) {
+            return;
+        }
+
+        String paramStr = String.join(",", params);
+
+        String query = "UPDATE users SET " + paramStr + "WHERE username = ?";
 
         PreparedStatement statement = getConnection().prepareStatement(query);
 
-        statement.setString(1, user.getUsername());
-        statement.setString(2, user.getPassword());
-        statement.setString(3, user.getBio());
-        statement.setString(4, user.getImage());
-        statement.setInt(5, user.getElo());
-        statement.setInt(6, user.getWins());
-        statement.setInt(7, user.getLosses());
-        statement.setString(8, user.getId().toString());
+        int parameterIndex = 1;
+
+        if (params.contains("password = ?")) {
+            statement.setString(parameterIndex++, user.getPassword());
+        }
+        if (params.contains("bio = ?")) {
+            statement.setString(parameterIndex++, user.getBio());
+        }
+        if (params.contains("elo = ?")) {
+            statement.setInt(parameterIndex++, user.getElo());
+        }
+        if (params.contains("image = ?")) {
+            statement.setString(parameterIndex++, user.getImage());
+        }
+        if (params.contains("wins = ?")) {
+            statement.setInt(parameterIndex++, user.getWins());
+        }
+        if (params.contains("losses = ?")) {
+            statement.setInt(parameterIndex++, user.getLosses());
+        }
+
+        statement.setString(parameterIndex, user.getUsername());
 
         statement.executeUpdate();
     }

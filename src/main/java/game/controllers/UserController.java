@@ -7,6 +7,7 @@ import game.models.user.UserData;
 import game.repos.UserRepo;
 import http.ContentType;
 import http.HttpStatus;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import server.Response;
@@ -15,8 +16,8 @@ import java.util.List;
 
 public class UserController extends Controller {
 
-    @Setter
-    @Getter
+    @Setter(AccessLevel.PRIVATE)
+    @Getter(AccessLevel.PRIVATE)
     private UserRepo userRepo;
 
     public UserController(UserRepo userRepo){
@@ -40,12 +41,7 @@ public class UserController extends Controller {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
 
-            return new Response(
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    ContentType.JSON,
-                    null,
-                    "Internal Server error"
-            );
+            return new Response(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -70,12 +66,7 @@ public class UserController extends Controller {
             } catch (JsonProcessingException e){
                 e.printStackTrace();
 
-                return new Response(
-                        HttpStatus.INTERNAL_SERVER_ERROR,
-                        ContentType.JSON,
-                        null,
-                        "Internal Server Error"
-                );
+                return new Response(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } else {
             return new Response(
@@ -119,15 +110,31 @@ public class UserController extends Controller {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
 
-            return new Response(
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    ContentType.JSON,
-                    null,
-                    "Internal Server error"
-            );
+            return new Response(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 
+    /**
+     * PUT /users/{username}
+     * TODO: add auth (401)
+     *
+     */
+    public Response updateUser(String body) {
+        try {
+            if (getUserRepo().updateUser(getObjectMapper().readValue(body, UserData.class))) {
+               return new Response(
+                       HttpStatus.OK,
+                       ContentType.JSON,
+                       null,
+                       "User sucessfully updated."
+               );
+            } else {
+                return new Response(HttpStatus.NOT_FOUND);
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
 
-
+            return new Response(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

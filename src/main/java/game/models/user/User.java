@@ -29,6 +29,12 @@ public class User {
         setPassword(credentials.getPassword());
     }
 
+    public User(UserData userData) {
+        setUsername(userData.getUsername());
+        setBio(userData.getBio());
+        setImage(userData.getImage());
+    }
+
     public UserCredentials getUserCredentials() {
         return new UserCredentials(username, password);
     }

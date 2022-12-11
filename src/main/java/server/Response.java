@@ -26,6 +26,15 @@ public class Response {
         setDescription(description);
     }
 
+    public Response(HttpStatus status) {
+        setContentType(ContentType.JSON);
+        setStatusCode(status.getCode());
+        setContent(null);
+        setStatusMessage(status.getMsg());
+        setDescription(status.getMsg());
+    }
+
+
     protected String build() {
 
         switch (contentType) {

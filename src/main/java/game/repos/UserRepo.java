@@ -72,6 +72,24 @@ public class UserRepo {
         return newUser;
     }
 
+    public boolean updateUser(UserData userData) {
+
+        refreshCache();
+
+        //Check if given user exists
+        if (getByName(userData.getUsername()) == null) {
+            return false;
+        }
+
+        try {
+            getUserDao().update(new User(userData));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
     private void checkCache() {
         if (userCache.isEmpty()) {
             try {
