@@ -1,6 +1,8 @@
 package game.models.user;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
+import dto.UserCredentials;
+import dto.UserData;
+import dto.UserStats;
 import lombok.*;
 
 import java.util.UUID;

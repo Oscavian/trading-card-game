@@ -1,4 +1,4 @@
-package game.models.user;
+package dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.AllArgsConstructor;
@@ -23,4 +23,6 @@ public class UserStats {
     private int losses;
 
     public UserStats(){}
+
+
 }

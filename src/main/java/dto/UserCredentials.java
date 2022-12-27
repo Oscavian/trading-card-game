@@ -1,4 +1,4 @@
-package game.models.user;
+package dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.AllArgsConstructor;
@@ -6,15 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 @AllArgsConstructor
-public class UserData {
+public class UserCredentials {
+
     @JsonAlias({"Username"})
     private String username;
-    @JsonAlias({"Bio"})
-    private String bio;
-    @JsonAlias({"Image"})
-    private String image;
+    @JsonAlias({"Password"})
+    private String password;
+    UserCredentials(){}
 
-    UserData(){}
 }

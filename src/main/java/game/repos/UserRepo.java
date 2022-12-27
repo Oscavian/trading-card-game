@@ -2,8 +2,8 @@ package game.repos;
 
 import game.dao.UserDao;
 import game.models.user.User;
-import game.models.user.UserCredentials;
-import game.models.user.UserData;
+import dto.UserCredentials;
+import dto.UserData;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
