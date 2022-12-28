@@ -3,6 +3,13 @@
 This HTTP/REST-based server is built to be a platform for trading and battling with and
 against each other in a magical card-game world.
 
+# Deployment
+
+## PostgreSQL DB
+```shell
+docker run --detach --name swe1db -e POSTGRES_USER=swe1user -e POSTGRES_PASSWORD=swe1pw -v data:/var/lib/postgresql/data -p 5431:5432 postgres`
+```
+
 ## Checklist Features
 ### Functional Requirements
  
