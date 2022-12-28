@@ -1,0 +1,60 @@
+//DBML markup
+//use https://dbdiagram.io/d to render image
+
+Project project_name {
+  database_type: 'PostgreSQL'
+  Note: 'MTCG database diagram'
+}
+
+Table users {
+  uuid uuid [pk]
+  username varchar [unique, not null]
+  password varchar [not null]
+  bio varchar
+  image varchar
+  elo integer
+  wins integer
+  losses integer
+  coins integer
+}
+
+Table tradings {
+  uuid uuid [pk]
+  user_offering uuid [ref: > users.uuid]
+  card_offered uuid [ref: > cards.uuid]
+  type varchar
+  minimum_damage integer
+}
+
+Table cards {
+  uuid uuid [pk]
+  name varchar
+  damage float
+}
+
+Table stacks {
+  user_uuid uuid [pk, ref: > users.uuid]
+  card_uuid uuid [pk, ref: > cards.uuid]
+}
+
+Table decks {
+  user_uuid uuid [pk, ref: > users.uuid]
+  card_uuid uuid [pk, ref: > cards.uuid]
+}
+
+Table packages {
+  uuid uuid [pk]
+  owner uuid [ref: > users.uuid]
+}
+
+Table packages_cards {
+  package uuid [ref: > packages.uuid]
+  card uuid [ref: > cards.uuid]
+}
+
+Table battle_logs {
+  battle uuid [pk]
+  player1 uuid [ref: > users.uuid]
+  player2 uuid [ref: > users.uuid]
+  actions text
+}
