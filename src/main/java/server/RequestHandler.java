@@ -38,14 +38,18 @@ public class RequestHandler implements Runnable {
 
             sendResponse(res);
 
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
+            sendResponse(new Response(HttpStatus.INTERNAL_SERVER_ERROR));
             e.printStackTrace();
         }
         closeRequest();
 
     }
 
-    private void sendResponse(Response response){
+    private void sendResponse(Response response) {
+        if (response == null){
+            throw new IllegalArgumentException("Empty response!");
+        }
         getOutputStream().write(response.build());
     }
 
