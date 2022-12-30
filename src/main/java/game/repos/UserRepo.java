@@ -10,30 +10,28 @@ import lombok.Setter;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Getter(AccessLevel.PRIVATE)
 @Setter(AccessLevel.PRIVATE)
-public class UserRepo {
+public class UserRepo extends Repository<UUID, UserData> {
 
     private UserDao userDao;
-    private ConcurrentHashMap<UUID, User> userCache = new ConcurrentHashMap<>();
 
     public UserRepo(UserDao userDao) {
+        super();
         setUserDao(userDao);
+    }
+
+    @Override
+    protected ArrayList<UserData> getAll() {
+        return getAllUserData();
     }
 
     public ArrayList<UserData> getAllUserData() {
         checkCache();
-
-        var userData = new ArrayList<UserData>();
-
-        for(var user : userCache.values()) {
-            userData.add(user.toUserData());
-        }
-
-        return userData;
+        return new ArrayList<>(cache.values());
     }
 
     public UUID addUser(UserCredentials credentials) {
@@ -41,7 +39,7 @@ public class UserRepo {
         UUID uuid = null;
 
         //check for duplicate username
-        if (getByName(credentials.getUsername()) != null){
+        if (getByName(credentials.getUsername()) != null) {
             return null;
         }
 
@@ -81,44 +79,35 @@ public class UserRepo {
         checkCache();
 
         //Cache uses UUID as key, so
-        User user = userCache.values().stream()
+        return getCache().values().stream()
                 .filter(user1 -> name.equals(user1.getUsername()))
-                .findAny()
-                .orElse(null);
+                .findAny().orElse(null);
 
-        if (user != null) {
-            return user.toUserData();
-        } else {
-            return null;
-        }
     }
 
+    @Override
     public UserData getById(UUID uuid) {
         if (uuid == null) {
             return null;
         }
         checkCache();
-        return new UserData(userCache.get(uuid));
+        return getCache().get(uuid);
 
     }
 
-    private void checkCache() {
-        if (userCache.isEmpty()) {
-            try {
-                setUserCache(new ConcurrentHashMap<>(getUserDao().read()));
-            } catch (SQLException e){
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void refreshCache() {
+    @Override
+    protected void refreshCache() {
         try {
-            setUserCache(new ConcurrentHashMap<>(getUserDao().read()));
-        } catch (SQLException e){
+            setUserCache(getUserDao().read());
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-
+    private void setUserCache(HashMap<UUID, User> cache) {
+        getCache().clear();
+        for (var user : cache.values()) {
+            getCache().put(user.getId(), user.toUserData());
+        }
+    }
 }
