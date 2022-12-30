@@ -1,6 +1,6 @@
 package game.dao;
 
-import game.models.user.User;
+import game.models.User;
 import lombok.Getter;
 import lombok.Setter;
 

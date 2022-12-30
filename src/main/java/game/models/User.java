@@ -1,4 +1,4 @@
-package game.models.user;
+package game.models;
 
 import game.dto.UserCredentials;
 import game.dto.UserData;

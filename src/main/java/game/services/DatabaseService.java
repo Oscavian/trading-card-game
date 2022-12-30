@@ -2,13 +2,12 @@ package game.services;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DatabaseService extends Service {
+public class DatabaseService {
     @Getter(AccessLevel.PUBLIC)
     private Connection connection;
 

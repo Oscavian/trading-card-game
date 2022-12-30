@@ -1,4 +1,4 @@
-package game.models.trading;
+package game.models;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import game.utils.Element;

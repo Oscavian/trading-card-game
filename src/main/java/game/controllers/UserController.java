@@ -1,7 +1,6 @@
 package game.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import game.models.user.User;
 import game.dto.UserCredentials;
 import game.dto.UserData;
 import game.repos.UserRepo;

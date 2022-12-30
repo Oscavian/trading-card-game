@@ -1,4 +1,4 @@
-package game.models.card;
+package game.models;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import game.utils.Element;
