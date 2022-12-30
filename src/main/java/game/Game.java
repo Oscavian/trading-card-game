@@ -77,7 +77,9 @@ public class Game implements ServerApp {
     }
 
     private Response handlePUT(Request request) {
-
+        if (request.getPathname().matches("/users/[A-Za-z0-9]+/?")) {
+            return this.userController.updateUser(request.getBody());
+        }
 
         return new Response(
                 HttpStatus.NOT_FOUND,

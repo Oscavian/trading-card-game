@@ -9,9 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
-public class UserDao implements Dao<User> {
+public class UserDao implements Dao<UUID, User> {
 
     @Getter
     @Setter
@@ -21,7 +22,7 @@ public class UserDao implements Dao<User> {
 
 
     @Override
-    public User create(User user) throws SQLException {
+    public UUID create(User user) throws SQLException {
         String query = "INSERT INTO users (username, password) VALUES (?,?) RETURNING uuid";
 
         PreparedStatement statement = getConnection().prepareStatement(query);
@@ -31,15 +32,14 @@ public class UserDao implements Dao<User> {
         ResultSet res = statement.executeQuery();
 
         if (res.next()){
-            user.setId(UUID.fromString(res.getString(1)));
-            return user;
+            return UUID.fromString(res.getString(1));
         } else {
             return null;
         }
     }
 
     @Override
-    public ArrayList<User> read() throws SQLException {
+    public HashMap<UUID, User> read() throws SQLException {
 
         String query = "SELECT uuid, username, password, bio, image, elo, wins, losses from users;";
 
@@ -47,7 +47,7 @@ public class UserDao implements Dao<User> {
 
         ResultSet resultSet = statement.executeQuery();
 
-        ArrayList<User> list = new ArrayList<>();
+        HashMap<UUID, User> list = new HashMap<>();
 
         while (resultSet.next()) {
             User user = new User(
@@ -61,9 +61,9 @@ public class UserDao implements Dao<User> {
                     resultSet.getInt("losses")
             );
 
-            list.add(user);
+            list.put(user.getId(), user);
         }
-
+        statement.close();
         return list;
     }
 
@@ -84,22 +84,22 @@ public class UserDao implements Dao<User> {
 
         var params = new ArrayList<String>();
 
-        if (!user.getPassword().isEmpty()){
+        if (user.getPassword() != null && !user.getPassword().isEmpty()){
             params.add("password = ?");
         }
-        if (!user.getBio().isEmpty()) {
+        if (user.getBio() != null) {
             params.add("bio = ?");
         }
-        if (!user.getImage().isEmpty()) {
+        if (user.getImage() != null) {
             params.add("image = ?");
         }
-        if (user.getElo() != 0){
+        if (user.getElo() != null){
             params.add("elo = ?");
         }
-        if (user.getWins() != 0) {
+        if (user.getWins() != null) {
             params.add("wins = ?");
         }
-        if (user.getLosses() != 0) {
+        if (user.getLosses() != null) {
             params.add("losses = ?");
         }
 
@@ -109,7 +109,7 @@ public class UserDao implements Dao<User> {
 
         String paramStr = String.join(",", params);
 
-        String query = "UPDATE users SET " + paramStr + "WHERE username = ?";
+        String query = "UPDATE users SET " + paramStr + " WHERE username = ?";
 
         PreparedStatement statement = getConnection().prepareStatement(query);
 

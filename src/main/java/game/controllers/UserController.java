@@ -2,8 +2,8 @@ package game.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import game.models.user.User;
-import dto.UserCredentials;
-import dto.UserData;
+import game.dto.UserCredentials;
+import game.dto.UserData;
 import game.repos.UserRepo;
 import http.ContentType;
 import http.HttpStatus;
@@ -13,6 +13,7 @@ import lombok.Setter;
 import server.Response;
 
 import java.util.List;
+import java.util.UUID;
 
 public class UserController extends Controller {
 
@@ -84,16 +85,16 @@ public class UserController extends Controller {
      *
      */
     public Response registerUser(String body) {
-        User newUser;
+        UUID uuid;
         try {
-            newUser = getUserRepo().addUser(getObjectMapper().readValue(body, UserCredentials.class));
+            uuid = getUserRepo().addUser(getObjectMapper().readValue(body, UserCredentials.class));
 
-            if (newUser != null) {
-                String uuid = getObjectMapper().writeValueAsString(newUser.getId());
+            if (uuid != null) {
+                String uuid_string = getObjectMapper().writeValueAsString(uuid.toString());
                 return new Response(
                         HttpStatus.CREATED,
                         ContentType.JSON,
-                        uuid,
+                        uuid_string,
                         "User successfully created"
                 );
 
@@ -110,7 +111,7 @@ public class UserController extends Controller {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
 
-            return new Response(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new Response(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -133,7 +134,6 @@ public class UserController extends Controller {
             }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-
             return new Response(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

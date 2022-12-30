@@ -1,8 +1,8 @@
 package game.models.user;
 
-import dto.UserCredentials;
-import dto.UserData;
-import dto.UserStats;
+import game.dto.UserCredentials;
+import game.dto.UserData;
+import game.dto.UserStats;
 import lombok.*;
 
 import java.util.UUID;
@@ -20,32 +20,21 @@ public class User {
     private String bio;
     private String image;
 
-    private int elo;
+    private Integer elo;
 
-    private int wins;
+    private Integer wins;
 
-    private int losses;
+    private Integer losses;
 
-    public User(UserCredentials credentials) {
-        setUsername(credentials.getUsername());
-        setPassword(credentials.getPassword());
-    }
-
-    public User(UserData userData) {
-        setUsername(userData.getUsername());
-        setBio(userData.getBio());
-        setImage(userData.getImage());
-    }
-
-    public UserCredentials getUserCredentials() {
+    public UserCredentials toUserCredentials() {
         return new UserCredentials(username, password);
     }
 
-    public UserData getUserData() {
+    public UserData toUserData() {
         return new UserData(username, bio, image);
     }
 
-    public UserStats getUserStats() {
+    public UserStats toUserStats() {
         return new UserStats(username, elo, wins, losses);
     }
 }
