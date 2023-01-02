@@ -18,6 +18,7 @@ public class UserDao implements Dao<UUID, User> {
     @Setter
     private Connection connection;
 
+
     public UserDao(Connection connection) { setConnection(connection); }
 
 
@@ -67,20 +68,36 @@ public class UserDao implements Dao<UUID, User> {
         return list;
     }
 
+    public HashMap<String, User> read_returningMapByName() throws SQLException {
+
+        String query = "SELECT uuid, username, password, bio, image, elo, wins, losses from users;";
+
+        PreparedStatement statement = getConnection().prepareStatement(query);
+
+        ResultSet resultSet = statement.executeQuery();
+
+        HashMap<String, User> list = new HashMap<>();
+
+        while (resultSet.next()) {
+            User user = new User(
+                    UUID.fromString(resultSet.getString("uuid")),
+                    resultSet.getString("username"),
+                    resultSet.getString("password"),
+                    resultSet.getString("bio"),
+                    resultSet.getString("image"),
+                    resultSet.getInt("elo"),
+                    resultSet.getInt("wins"),
+                    resultSet.getInt("losses")
+            );
+
+            list.put(user.getUsername(), user);
+        }
+        statement.close();
+        return list;
+    }
+
     @Override
     public void update(User user) throws SQLException {
-        /*
-        String query = "UPDATE users SET" +
-                        "username = ?," +
-                        "password = ?," +
-                        "bio = ?," +
-                        "image = ?," +
-                        "elo = ?," +
-                        "wins = ?," +
-                        "losses = ?," +
-                "WHERE uuid = ?";
-
-         */
 
         var params = new ArrayList<String>();
 

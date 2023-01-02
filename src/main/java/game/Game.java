@@ -1,35 +1,82 @@
 package game;
 
+import game.controllers.CardController;
 import game.controllers.UserController;
+import game.dao.CardDao;
+import game.dao.StackEntryDao;
 import game.dao.UserDao;
+import game.repos.CardRepo;
 import game.repos.UserRepo;
+import game.services.AuthService;
+import game.services.CacheService;
 import game.services.DatabaseService;
 import http.ContentType;
+import http.HttpMethod;
 import http.HttpStatus;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.Setter;
 import server.Request;
 import server.Response;
 import server.ServerApp;
 
+import java.util.HashMap;
 
+@Setter(AccessLevel.PRIVATE)
 public class Game implements ServerApp {
 
 
-    //CONTROLLER
-    @Setter(AccessLevel.PRIVATE)
+    //CONTROLLER & SERVICES
     private UserController userController;
-    @Setter(AccessLevel.PRIVATE)
+    private CardController cardController;
     private DatabaseService databaseService = new DatabaseService();
+    private AuthService authService = new AuthService();
 
     private final String UUID_REGEX = "^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$";
 
+    @Getter(AccessLevel.PRIVATE)
+    private String userLogin;
+
     public Game() {
-        setUserController(new UserController(new UserRepo(new UserDao(databaseService.getConnection()))));
+        setUserController(
+                new UserController(
+                        new UserRepo(
+                                new UserDao(databaseService.getConnection()),
+                                new CacheService()
+                        ),
+                        authService
+                )
+        );
+        setCardController(
+                new CardController(
+                        new CardRepo(
+                                new CardDao(databaseService.getConnection()),
+                                new StackEntryDao(databaseService.getConnection()),
+                                new CacheService()
+                        ),
+                        authService
+                )
+        );
     }
 
     @Override
     public Response handleRequest(Request request) {
+
+        setUserLogin(authService.getLogin(request.getAuthorization()));
+
+        if (userLogin == null && request.getMethod() == HttpMethod.POST) {
+            if (request.getPathname().matches("/users/?")) {
+                return this.userController.registerUser(request.getBody());
+            }
+
+            if (request.getPathname().matches("/sessions/?")) {
+                return this.userController.loginUser(request.getBody());
+            }
+        }
+
+        if (userLogin == null) {
+            return new Response(HttpStatus.UNAUTHORIZED);
+        }
 
         return switch (request.getMethod()) {
             case GET -> handleGET(request);
@@ -61,7 +108,7 @@ public class Game implements ServerApp {
         }
 
         if (path.matches("/cards/?")) {
-            return null;
+            return this.cardController.getCards(getUserLogin());
         }
 
         if (path.matches("/decks/?")) {
@@ -90,14 +137,6 @@ public class Game implements ServerApp {
 
     private Response handlePOST(Request request) {
         String path = request.getPathname();
-
-        if (path.matches("/users/?")) {
-            return this.userController.registerUser(request.getBody());
-        }
-
-        if (path.matches("/sessions/?")) {
-            return null;
-        }
 
         if (path.matches("/packages/?")) {
             return null;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import game.dto.UserCredentials;
 import game.dto.UserData;
 import game.repos.UserRepo;
+import game.services.AuthService;
 import http.ContentType;
 import http.HttpStatus;
 import lombok.AccessLevel;
@@ -14,14 +15,18 @@ import server.Response;
 import java.util.List;
 import java.util.UUID;
 
+@Setter(AccessLevel.PRIVATE)
+@Getter(AccessLevel.PRIVATE)
 public class UserController extends Controller {
 
-    @Setter(AccessLevel.PRIVATE)
-    @Getter(AccessLevel.PRIVATE)
-    private UserRepo userRepo;
 
-    public UserController(UserRepo userRepo){
+
+    private UserRepo userRepo;
+    private AuthService authService;
+
+    public UserController(UserRepo userRepo, AuthService authService){
         setUserRepo(userRepo);
+        setAuthService(authService);
     }
 
     /**
@@ -135,5 +140,38 @@ public class UserController extends Controller {
             e.printStackTrace();
             return new Response(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public Response loginUser(String body) {
+
+        try {
+            UserCredentials credentials = getObjectMapper().readValue(body, UserCredentials.class);
+
+            if (getUserRepo().checkCredentials(credentials)) {
+                var token = getAuthService().login(credentials.getUsername());
+
+                return new Response(
+                        HttpStatus.OK,
+                        ContentType.JSON,
+                        token,
+                        "User login successful"
+                );
+            }
+
+            return new Response(
+                    HttpStatus.UNAUTHORIZED,
+                    ContentType.JSON,
+                    null,
+                    "Invalid username/password provided"
+            );
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return new Response(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public Response getUsersLoggedIn() {
+        return null;
     }
 }

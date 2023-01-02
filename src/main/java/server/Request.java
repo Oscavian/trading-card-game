@@ -17,6 +17,8 @@ public class Request {
     private String pathname;
     private String contentType;
     private Integer contentLength;
+
+    private String authorization;
     private String body = "";
 
     @Getter(AccessLevel.NONE)
@@ -26,6 +28,8 @@ public class Request {
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private final String CONTENT_LENGTH = "Content-Length: ";
+
+    private final String AUTHORIZATION = "Authorization: Bearer ";
 
     public Request(BufferedReader inputStream) {
         assembleRequest(inputStream);
@@ -51,6 +55,10 @@ public class Request {
 
                     if (line.startsWith(CONTENT_TYPE)){
                         setContentType(getContentTypeFromInputLine(line));
+                    }
+
+                    if (line.startsWith(AUTHORIZATION)) {
+                        setAuthorization(getAuthorizationFromInputLine(line));
                     }
                 }
 
@@ -107,5 +115,10 @@ public class Request {
     private String getContentTypeFromInputLine(String line) {
         return line.substring(CONTENT_TYPE.length());
     }
+    private String getAuthorizationFromInputLine(String line) {
+        return line.substring(AUTHORIZATION.length());
+    }
+
+
 
 }

@@ -17,6 +17,10 @@ public class CardDao implements Dao<UUID, Card> {
     @Setter
     private Connection connection;
 
+    public CardDao(Connection connection) {
+        setConnection(connection);
+    }
+
     @Override
     public UUID create(Card card) throws SQLException {
         String query = "INSERT INTO cards (name, damage) VALUES (?, ?) RETURNING uuid";

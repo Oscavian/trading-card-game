@@ -4,34 +4,49 @@ import game.dao.UserDao;
 import game.models.User;
 import game.dto.UserCredentials;
 import game.dto.UserData;
+import game.services.CacheService;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 @Getter(AccessLevel.PRIVATE)
 @Setter(AccessLevel.PRIVATE)
-public class UserRepo extends Repository<UUID, UserData> {
+public class UserRepo extends Repository<UUID, User> {
 
     private UserDao userDao;
 
-    public UserRepo(UserDao userDao) {
-        super();
+    private CacheService cacheService;
+
+    public UserRepo(UserDao userDao, CacheService cacheService) {
+        setCacheService(cacheService);
         setUserDao(userDao);
     }
 
     @Override
-    protected ArrayList<UserData> getAll() {
-        return getAllUserData();
+    protected ArrayList<User> getAll() {
+        checkCache();
+        return new ArrayList<>(getCacheService().getUuidUserCache().values());
     }
 
     public ArrayList<UserData> getAllUserData() {
         checkCache();
-        return new ArrayList<>(cache.values());
+        var list = new ArrayList<UserData>();
+        getCacheService().getUuidUserCache().values().forEach((user) -> list.add(user.toUserData()));
+        return list;
+    }
+
+    public boolean checkCredentials(UserCredentials credentials) {
+        refreshCache();
+        User foundUser = getCacheService().getUsernameUserCache().get(credentials.getUsername());
+
+        if (foundUser != null) {
+            return Objects.equals(credentials.getPassword(), foundUser.getPassword());
+        }
+
+        return false;
     }
 
     public UUID addUser(UserCredentials credentials) {
@@ -79,35 +94,37 @@ public class UserRepo extends Repository<UUID, UserData> {
         checkCache();
 
         //Cache uses UUID as key, so
-        return getCache().values().stream()
-                .filter(user1 -> name.equals(user1.getUsername()))
-                .findAny().orElse(null);
-
+        User user = getCacheService().getUsernameUserCache().get(name);
+        if (user != null) {
+            return user.toUserData();
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public UserData getById(UUID uuid) {
+    public User getById(UUID uuid) {
         if (uuid == null) {
             return null;
         }
         checkCache();
-        return getCache().get(uuid);
-
+        return getCacheService().getUuidUserCache().get(uuid);
     }
 
     @Override
     protected void refreshCache() {
         try {
-            setUserCache(getUserDao().read());
+            getCacheService().refreshUuidUserCache(getUserDao().read());
+            getCacheService().refreshUsernameUserCache(getUserDao().read_returningMapByName());
+            //setCache(getUserDao().read());
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private void setUserCache(HashMap<UUID, User> cache) {
-        getCache().clear();
-        for (var user : cache.values()) {
-            getCache().put(user.getId(), user.toUserData());
+    protected void checkCache() {
+        if (getCacheService().getUuidUserCache().isEmpty() || getCacheService().getUsernameUserCache().isEmpty()) {
+            refreshCache();
         }
     }
 }

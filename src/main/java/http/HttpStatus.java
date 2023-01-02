@@ -11,7 +11,9 @@ public enum HttpStatus {
     NOT_FOUND(404, "Not Found"),
     CREATED(201, "Created"),
     METHOD_NOT_ALLOWED(405, "Method not allowed"),
+    UNAUTHORIZED(401, "Access token is missing or invalid"),
 
+    FORBIDDEN(403, "Forbidden"),
     CONFLICT(409, "Conflict");
 
     @Getter

@@ -36,7 +36,8 @@ create table if not exists decks
 (
     user_uuid uuid,
     card_uuid uuid,
-    primary key (user_uuid, card_uuid),
+    entry_uuid uuid default uuid_generate_v4() not null,
+    primary key (user_uuid, card_uuid, entry_uuid),
     constraint fk_decks_users
         foreign key (user_uuid)
             references users (uuid)
@@ -46,12 +47,14 @@ create table if not exists decks
             references cards (uuid)
             on delete cascade
 );
+
 
 create table if not exists stacks
 (
     user_uuid uuid,
     card_uuid uuid,
-    primary key (user_uuid, card_uuid),
+    entry_uuid uuid default uuid_generate_v4() not null,
+    primary key (user_uuid, card_uuid, entry_uuid),
     constraint fk_decks_users
         foreign key (user_uuid)
             references users (uuid)
@@ -62,19 +65,20 @@ create table if not exists stacks
             on delete cascade
 );
 
+
 create table if not exists tradings
 (
-    uuid uuid,
-    user_offering uuid,
-    card_offered uuid,
-    type varchar(255),
+    uuid           uuid,
+    user_offering  uuid,
+    card_offered   uuid,
+    type           varchar(255),
     minimum_damage int,
     constraint fk_tradings_users
         foreign key (user_offering)
-            references users(uuid),
+            references users (uuid),
     constraint fk_tradings_cards
         foreign key (card_offered)
-            references cards(uuid)
+            references cards (uuid)
 );
 
 create table if not exists packages
