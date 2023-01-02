@@ -1,5 +1,26 @@
 package game.services;
 
-public class AuthService {
+import game.models.User;
 
+import java.util.concurrent.ConcurrentHashMap;
+
+public class AuthService {
+    private final ConcurrentHashMap<String, String> session_tokens = new ConcurrentHashMap<>();
+
+    public String login(String user) {
+        String token = user + "-mtcgToken";
+        session_tokens.put(token, user);
+        return token;
+    }
+
+    public void logout(User user) {
+        session_tokens.remove(user.getUsername());
+    }
+
+    public String getLogin(String token) {
+        if (token == null || token.isEmpty()) {
+            return null;
+        }
+        return session_tokens.get(token);
+    }
 }
