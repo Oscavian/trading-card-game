@@ -68,19 +68,24 @@ public class UserRepo extends Repository<UUID, User> {
         return uuid;
     }
 
-    public boolean updateUser(UserData userData) {
+    public boolean updateUser(UserData userData, String username) {
 
         checkCache();
+        User user = getCacheService().getUsernameUserCache().get(username);
 
-        //Check if given user exists
-        if (getByName(userData.getUsername()) == null) {
+        if (user == null) {
             return false;
         }
 
+        user.setUsername(userData.getUsername());
+        user.setBio(userData.getBio());
+        user.setImage(userData.getImage());
+
         try {
-            getUserDao().update(userData.toUser());
+            getUserDao().update(user);
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
 
         refreshCache();

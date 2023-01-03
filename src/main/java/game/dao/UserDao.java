@@ -4,10 +4,7 @@ import game.models.User;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -99,10 +96,17 @@ public class UserDao implements Dao<UUID, User> {
     @Override
     public void update(User user) throws SQLException {
 
+        if (user.getId() == null) {
+            throw new IllegalArgumentException("User has no ID specified");
+        }
+
         var params = new ArrayList<String>();
 
         if (user.getPassword() != null && !user.getPassword().isEmpty()){
             params.add("password = ?");
+        }
+        if (user.getUsername() != null && !user.getUsername().isEmpty()) {
+            params.add("username = ?");
         }
         if (user.getBio() != null) {
             params.add("bio = ?");
@@ -110,13 +114,13 @@ public class UserDao implements Dao<UUID, User> {
         if (user.getImage() != null) {
             params.add("image = ?");
         }
-        if (user.getElo() != null){
+        if (user.getElo() != 0){
             params.add("elo = ?");
         }
-        if (user.getWins() != null) {
+        if (user.getWins() != 0) {
             params.add("wins = ?");
         }
-        if (user.getLosses() != null) {
+        if (user.getLosses() != 0) {
             params.add("losses = ?");
         }
 
@@ -126,7 +130,7 @@ public class UserDao implements Dao<UUID, User> {
 
         String paramStr = String.join(",", params);
 
-        String query = "UPDATE users SET " + paramStr + " WHERE username = ?";
+        String query = "UPDATE users SET " + paramStr + " WHERE uuid = ?";
 
         PreparedStatement statement = getConnection().prepareStatement(query);
 
@@ -134,6 +138,9 @@ public class UserDao implements Dao<UUID, User> {
 
         if (params.contains("password = ?")) {
             statement.setString(parameterIndex++, user.getPassword());
+        }
+        if (params.contains("username = ?")) {
+            statement.setString(parameterIndex++, user.getUsername());
         }
         if (params.contains("bio = ?")) {
             statement.setString(parameterIndex++, user.getBio());
@@ -151,7 +158,7 @@ public class UserDao implements Dao<UUID, User> {
             statement.setInt(parameterIndex++, user.getLosses());
         }
 
-        statement.setString(parameterIndex, user.getUsername());
+        statement.setObject(parameterIndex, user.getId());
 
         statement.executeUpdate();
     }
@@ -162,7 +169,7 @@ public class UserDao implements Dao<UUID, User> {
 
         PreparedStatement statement = getConnection().prepareStatement(query);
 
-        statement.setString(1, user.getId().toString());
+        statement.setObject(1, user.getId());
 
         statement.executeUpdate();
     }

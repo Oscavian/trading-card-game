@@ -13,8 +13,8 @@ public class AuthService {
         return token;
     }
 
-    public void logout(User user) {
-        session_tokens.remove(user.getUsername());
+    public void logout(String user) {
+        session_tokens.remove(user + "-mtcgToken");
     }
 
     public String getLogin(String token) {

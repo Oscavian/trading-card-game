@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class UserData {
-    @JsonAlias({"Username"})
+    @JsonAlias({"Name"})
     private String username;
     @JsonAlias({"Bio"})
     private String bio;

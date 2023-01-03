@@ -95,12 +95,22 @@ public class Game implements ServerApp {
     private Response handleGET(Request request) {
         String path = request.getPathname();
 
+        //only allowed for admin
         if (path.matches("/users/?")) {
-            return this.userController.getUsers();
+            if (userLogin.equals("admin")) {
+                return this.userController.getUsers();
+            } else {
+                return new Response(HttpStatus.UNAUTHORIZED);
+            }
         }
 
+        // Only allowed for admin or maching user
         if (path.matches("/users/[A-Za-z0-9]+/?")) {
-            return this.userController.getUserByName(request.getPathname().split("/")[2]);
+            if (userLogin.equals("admin") || userLogin.equals(path.split("/")[2])) {
+                return this.userController.getUserByName(path.split("/")[2]);
+            } else {
+                return new Response(HttpStatus.UNAUTHORIZED);
+            }
         }
 
         if (path.matches("/users/" + UUID_REGEX + "/?")) {
@@ -171,7 +181,11 @@ public class Game implements ServerApp {
         String path = request.getPathname();
 
         if (path.matches("/users/[A-Za-z0-9]+/?")) {
-            return this.userController.updateUser(request.getBody());
+            if (userLogin.equals("admin") || userLogin.equals(path.split("/")[2])){
+                return this.userController.updateUser(request.getBody(), path.split("/")[2]);
+            } else {
+                return new Response(HttpStatus.UNAUTHORIZED);
+            }
         }
 
         if (path.matches("/decks/?")) {

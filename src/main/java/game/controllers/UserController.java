@@ -20,11 +20,10 @@ import java.util.UUID;
 public class UserController extends Controller {
 
 
-
     private UserRepo userRepo;
     private AuthService authService;
 
-    public UserController(UserRepo userRepo, AuthService authService){
+    public UserController(UserRepo userRepo, AuthService authService) {
         setUserRepo(userRepo);
         setAuthService(authService);
     }
@@ -53,12 +52,11 @@ public class UserController extends Controller {
     /**
      * GET /users/{username}
      * TODO: auth (401)
-     *
      */
     public Response getUserByName(String name) {
         UserData user = getUserRepo().getByName(name);
 
-        if (user != null){
+        if (user != null) {
             try {
                 String userDataJSON = getObjectMapper().writeValueAsString(user);
                 return new Response(
@@ -68,7 +66,7 @@ public class UserController extends Controller {
                         "Data retrieved."
                 );
 
-            } catch (JsonProcessingException e){
+            } catch (JsonProcessingException e) {
                 e.printStackTrace();
 
                 return new Response(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -86,7 +84,6 @@ public class UserController extends Controller {
 
     /**
      * POST /users
-     *
      */
     public Response registerUser(String body) {
         UUID uuid;
@@ -121,18 +118,19 @@ public class UserController extends Controller {
 
     /**
      * PUT /users/{username}
-     * TODO: add auth (401)
-     *
      */
-    public Response updateUser(String body) {
+    public Response updateUser(String body, String username) {
         try {
-            if (getUserRepo().updateUser(getObjectMapper().readValue(body, UserData.class))) {
-               return new Response(
-                       HttpStatus.OK,
-                       ContentType.JSON,
-                       null,
-                       "User sucessfully updated."
-               );
+            UserData userData = getObjectMapper().readValue(body, UserData.class);
+
+            if (getUserRepo().updateUser(userData, username)) {
+                getAuthService().logout(username);
+                return new Response(
+                        HttpStatus.OK,
+                        ContentType.JSON,
+                        null,
+                        "User sucessfully updated."
+                );
             } else {
                 return new Response(HttpStatus.NOT_FOUND);
             }
