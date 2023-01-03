@@ -1,21 +1,21 @@
 package game.services;
 
 import game.models.Card;
-import game.models.StackEntry;
+import game.models.StackDeckEntry;
 import game.models.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Getter(AccessLevel.PUBLIC)
 public class CacheService {
     private final Map<UUID, User> uuidUserCache = Collections.synchronizedMap(new HashMap<>());
     private final Map<String, User> usernameUserCache = Collections.synchronizedMap(new HashMap<>());
     private final Map<UUID, Card> uuidCardCache = Collections.synchronizedMap(new HashMap<>());
+    private final Map<UUID, StackDeckEntry> uuidStackEntryCache = Collections.synchronizedMap(new HashMap<>());
+    private final Map<UUID, StackDeckEntry> uuidDeckEntryCache = Collections.synchronizedMap(new HashMap<>());
 
-    private final Map<UUID, StackEntry> uuidStackEntryCache = Collections.synchronizedMap(new HashMap<>());
 
     public synchronized void refreshUuidUserCache(HashMap<UUID, User> newCache) {
 
@@ -62,7 +62,7 @@ public class CacheService {
 
     }
 
-    public synchronized void refreshStackEntryCache(HashMap<UUID, StackEntry> newCache) {
+    public synchronized void refreshStackEntryCache(HashMap<UUID, StackDeckEntry> newCache) {
 
         System.out.println(uuidStackEntryCache);
         newCache.forEach((key, value) ->
@@ -74,6 +74,21 @@ public class CacheService {
         );
 
         System.out.println(uuidStackEntryCache);
+
+    }
+
+    public synchronized void refreshDeckEntryCache(HashMap<UUID, StackDeckEntry> newCache) {
+
+        System.out.println(uuidDeckEntryCache);
+        newCache.forEach((key, value) ->
+                uuidDeckEntryCache.merge(
+                        key, value,
+                        (u1, u2) ->
+                                u1.equals(u2) ? u1 : u2
+                )
+        );
+
+        System.out.println(uuidDeckEntryCache);
 
     }
 }

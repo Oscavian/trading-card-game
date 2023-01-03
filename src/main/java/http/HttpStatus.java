@@ -14,6 +14,7 @@ public enum HttpStatus {
     UNAUTHORIZED(401, "Access token is missing or invalid"),
 
     FORBIDDEN(403, "Forbidden"),
+    NO_CONTENT(204, "No Content"),
     CONFLICT(409, "Conflict");
 
     @Getter

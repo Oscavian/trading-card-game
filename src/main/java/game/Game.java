@@ -3,6 +3,7 @@ package game;
 import game.controllers.CardController;
 import game.controllers.UserController;
 import game.dao.CardDao;
+import game.dao.DeckEntryDao;
 import game.dao.StackEntryDao;
 import game.dao.UserDao;
 import game.repos.CardRepo;
@@ -23,6 +24,7 @@ import server.ServerApp;
 import java.util.HashMap;
 
 @Setter(AccessLevel.PRIVATE)
+@Getter
 public class Game implements ServerApp {
 
 
@@ -31,6 +33,7 @@ public class Game implements ServerApp {
     private CardController cardController;
     private DatabaseService databaseService = new DatabaseService();
     private AuthService authService = new AuthService();
+    private CacheService cacheService = new CacheService();
 
     private final String UUID_REGEX = "^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$";
 
@@ -42,7 +45,7 @@ public class Game implements ServerApp {
                 new UserController(
                         new UserRepo(
                                 new UserDao(databaseService.getConnection()),
-                                new CacheService()
+                                cacheService
                         ),
                         authService
                 )
@@ -52,7 +55,8 @@ public class Game implements ServerApp {
                         new CardRepo(
                                 new CardDao(databaseService.getConnection()),
                                 new StackEntryDao(databaseService.getConnection()),
-                                new CacheService()
+                                new DeckEntryDao(databaseService.getConnection()),
+                                cacheService
                         ),
                         authService
                 )
@@ -122,7 +126,7 @@ public class Game implements ServerApp {
         }
 
         if (path.matches("/decks/?")) {
-            return null;
+            return cardController.getDeck(userLogin);
         }
 
         if (path.matches("/stats/?")) {
@@ -189,7 +193,7 @@ public class Game implements ServerApp {
         }
 
         if (path.matches("/decks/?")) {
-            return null;
+            return cardController.putDeck(request.getBody(), userLogin);
         }
 
         return new Response(

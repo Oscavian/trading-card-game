@@ -9,7 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
-public class StackEntry {
+public class StackDeckEntry {
     private UUID entry_uuid;
     private UUID user_uuid;
     private UUID card_uuid;
