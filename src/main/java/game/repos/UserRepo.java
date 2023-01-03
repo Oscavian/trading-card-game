@@ -23,6 +23,7 @@ public class UserRepo extends Repository<UUID, User> {
     public UserRepo(UserDao userDao, CacheService cacheService) {
         setCacheService(cacheService);
         setUserDao(userDao);
+        refreshCache();
     }
 
     @Override

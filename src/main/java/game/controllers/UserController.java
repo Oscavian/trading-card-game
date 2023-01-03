@@ -109,9 +109,7 @@ public class UserController extends Controller {
             }
 
 
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-
+        } catch (JsonProcessingException | IllegalArgumentException e) {
             return new Response(HttpStatus.BAD_REQUEST);
         }
     }
@@ -134,9 +132,8 @@ public class UserController extends Controller {
             } else {
                 return new Response(HttpStatus.NOT_FOUND);
             }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return new Response(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (JsonProcessingException | IllegalArgumentException e) {
+            return new Response(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -163,8 +160,7 @@ public class UserController extends Controller {
                     "Invalid username/password provided"
             );
 
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        } catch (JsonProcessingException | IllegalArgumentException e) {
             return new Response(HttpStatus.BAD_REQUEST);
         }
     }
