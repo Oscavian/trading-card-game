@@ -26,8 +26,8 @@ public class DeckEntryDao implements Dao<UUID, StackDeckEntry>{
         String query = "INSERT INTO decks (user_uuid, card_uuid) VALUES (?, ?) RETURNING entry_uuid";
 
         PreparedStatement statement = getConnection().prepareStatement(query);
-        statement.setString(1, deckEntry.getUser_uuid().toString());
-        statement.setString(2, deckEntry.getCard_uuid().toString());
+        statement.setObject(1, deckEntry.getUser_uuid());
+        statement.setObject(2, deckEntry.getCard_uuid());
 
         ResultSet res = statement.executeQuery();
 

@@ -20,11 +20,11 @@ public class User {
     private String bio;
     private String image;
 
-    private Integer elo;
+    private int elo;
 
-    private Integer wins;
+    private int wins;
 
-    private Integer losses;
+    private int losses;
 
     public UserCredentials toUserCredentials() {
         return new UserCredentials(username, password);

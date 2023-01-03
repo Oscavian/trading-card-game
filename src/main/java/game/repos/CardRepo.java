@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Getter(AccessLevel.PRIVATE)
 @Setter(AccessLevel.PRIVATE)
@@ -107,17 +106,32 @@ public class CardRepo extends Repository<UUID, Card> {
         //get cards from cache
         cardIds.forEach(uuid -> cards.add(getCacheService().getUuidCardCache().get(uuid)));
 
-        boolean allowed = true;
         //check if cards all belong to user
         for (var id : cardIds) {
-            if (getCacheService().getUuidStackEntryCache().get(id).getUser_uuid().equals(user.getId())) {
-                allowed = false;
+            //check if card exists
+            Card card = getCacheService().getUuidCardCache().get(id);
+
+            if (card == null) {
+                return false;
+            }
+
+            //check if card is in a stack
+            var stackEntry = getCacheService().getUuidStackEntryCache().values().stream().filter(
+                    (entry) -> entry.getCard_uuid().equals(card.getId()))
+                    .findAny()
+                    .orElse(null);
+
+            if (stackEntry == null) {
+                return false;
+            }
+
+            //check if it belongs to the right user
+            if (!stackEntry.getUser_uuid().equals(user.getId())){
+                return false;
             }
         }
 
-        if (!allowed) {
-             return false;
-        }
+        //all cards okay, proceed
 
         //clear user's deck
         for (var entry : getCacheService().getUuidDeckEntryCache().values()){
