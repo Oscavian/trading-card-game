@@ -1,11 +1,10 @@
 package game.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -15,7 +14,7 @@ public class Package {
 
     private UUID uuid;
     private UUID owner;
-    private ArrayList<Card> cards;
+    private List<Card> cards;
 
     Package(){}
 }
