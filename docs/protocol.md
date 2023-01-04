@@ -16,7 +16,10 @@ Just
 | 27.12.2022 | 2h         | Database mockup                                                     |
 | 28.12.2022 | 1h         | Database DDL created                                                |
 | 30.12.2022 | 3h         | Add routes to game, adapt Repository template, began on Card Routes |
-| 02.01.2032 | 6h         | Add auth service, caching service, route GET /cards                 |
+| 02.01.2023 | 6h         | Add auth service, caching service, route GET /cards                 |
+| 3.01.2023  | 6h         | Implement GET /decks and PUT /decks                                 |
+| 4.01.2023  | 6h         | Bugfixes, implement POST /packages & POST /transactions/packages    |
+
 
 ## Technical steps
 

@@ -39,7 +39,7 @@ public class UserDao implements Dao<UUID, User> {
     @Override
     public HashMap<UUID, User> read() throws SQLException {
 
-        String query = "SELECT uuid, username, password, bio, image, elo, wins, losses from users;";
+        String query = "SELECT uuid, username, password, bio, image, elo, wins, losses, coins from users;";
 
         PreparedStatement statement = getConnection().prepareStatement(query);
 
@@ -56,7 +56,8 @@ public class UserDao implements Dao<UUID, User> {
                     resultSet.getString("image"),
                     resultSet.getInt("elo"),
                     resultSet.getInt("wins"),
-                    resultSet.getInt("losses")
+                    resultSet.getInt("losses"),
+                    resultSet.getInt("coins")
             );
 
             list.put(user.getId(), user);
@@ -67,7 +68,7 @@ public class UserDao implements Dao<UUID, User> {
 
     public HashMap<String, User> read_returningMapByName() throws SQLException {
 
-        String query = "SELECT uuid, username, password, bio, image, elo, wins, losses from users;";
+        String query = "SELECT uuid, username, password, bio, image, elo, wins, losses, coins from users;";
 
         PreparedStatement statement = getConnection().prepareStatement(query);
 
@@ -84,7 +85,8 @@ public class UserDao implements Dao<UUID, User> {
                     resultSet.getString("image"),
                     resultSet.getInt("elo"),
                     resultSet.getInt("wins"),
-                    resultSet.getInt("losses")
+                    resultSet.getInt("losses"),
+                    resultSet.getInt("coins")
             );
 
             list.put(user.getUsername(), user);
@@ -114,14 +116,17 @@ public class UserDao implements Dao<UUID, User> {
         if (user.getImage() != null) {
             params.add("image = ?");
         }
-        if (user.getElo() != 0){
+        if (user.getElo() >= 0){
             params.add("elo = ?");
         }
-        if (user.getWins() != 0) {
+        if (user.getWins() >= 0) {
             params.add("wins = ?");
         }
-        if (user.getLosses() != 0) {
+        if (user.getLosses() >= 0) {
             params.add("losses = ?");
+        }
+        if (user.getCoins() >= 0) {
+            params.add("coins = ?");
         }
 
         if (params.isEmpty()) {
@@ -145,17 +150,20 @@ public class UserDao implements Dao<UUID, User> {
         if (params.contains("bio = ?")) {
             statement.setString(parameterIndex++, user.getBio());
         }
-        if (params.contains("elo = ?")) {
-            statement.setInt(parameterIndex++, user.getElo());
-        }
         if (params.contains("image = ?")) {
             statement.setString(parameterIndex++, user.getImage());
+        }
+        if (params.contains("elo = ?")) {
+            statement.setInt(parameterIndex++, user.getElo());
         }
         if (params.contains("wins = ?")) {
             statement.setInt(parameterIndex++, user.getWins());
         }
         if (params.contains("losses = ?")) {
             statement.setInt(parameterIndex++, user.getLosses());
+        }
+        if (params.contains("coins = ?")) {
+            statement.setInt(parameterIndex++, user.getCoins());
         }
 
         statement.setObject(parameterIndex, user.getId());

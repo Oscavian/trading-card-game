@@ -19,7 +19,6 @@ public class CacheService {
 
     public synchronized void refreshUuidUserCache(HashMap<UUID, User> newCache) {
 
-        System.out.println(uuidUserCache);
         newCache.forEach((key, value) ->
                 uuidUserCache.merge(
                         key, value,
@@ -28,13 +27,12 @@ public class CacheService {
                 )
         );
 
-        System.out.println(uuidUserCache);
+        System.out.println("Cache<UUID, User> refreshed! Contents: \n" + uuidUserCache);
 
     }
 
     public synchronized void refreshUsernameUserCache(HashMap<String, User> newCache) {
 
-        System.out.println(usernameUserCache);
         newCache.forEach((key, value) ->
                 usernameUserCache.merge(
                         key, value,
@@ -43,13 +41,12 @@ public class CacheService {
                 )
         );
 
-        System.out.println(usernameUserCache);
+        System.out.println("Cache<Username, User> refreshed! Contents: \n" + usernameUserCache);
 
     }
 
     public synchronized void refreshUuidCardCache(HashMap<UUID, Card> newCache) {
 
-        System.out.println(uuidCardCache);
         newCache.forEach((key, value) ->
                 uuidCardCache.merge(
                         key, value,
@@ -58,13 +55,12 @@ public class CacheService {
                 )
         );
 
-        System.out.println(uuidCardCache);
+        System.out.println("Cache<UUID, Card> refreshed! Contents: \n" + uuidCardCache);
 
     }
 
     public synchronized void refreshStackEntryCache(HashMap<UUID, StackDeckEntry> newCache) {
 
-        System.out.println(uuidStackEntryCache);
         newCache.forEach((key, value) ->
                 uuidStackEntryCache.merge(
                         key, value,
@@ -73,13 +69,13 @@ public class CacheService {
                 )
         );
 
-        System.out.println(uuidStackEntryCache);
+        System.out.println("Cache<UUID, StackEntry> refreshed! Contents: \n" + uuidStackEntryCache);
+
 
     }
 
     public synchronized void refreshDeckEntryCache(HashMap<UUID, StackDeckEntry> newCache) {
 
-        System.out.println(uuidDeckEntryCache);
         newCache.forEach((key, value) ->
                 uuidDeckEntryCache.merge(
                         key, value,
@@ -88,7 +84,8 @@ public class CacheService {
                 )
         );
 
-        System.out.println(uuidDeckEntryCache);
+        System.out.println("Cache<UUID, DeckEntry> refreshed! Contents: \n" + uuidDeckEntryCache);
+
 
     }
 }

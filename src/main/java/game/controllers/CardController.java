@@ -167,5 +167,42 @@ public class CardController extends Controller {
             return new Response(HttpStatus.BAD_REQUEST);
         }
     }
+
+    public Response postTransactionsPackages(String userlogin) {
+
+        try {
+            List<Card> aquiredPackage = getCardRepo().aquirePackage(userlogin);
+
+            if (aquiredPackage == null) {
+                return new Response(
+                        HttpStatus.FORBIDDEN,
+                        ContentType.JSON,
+                        null,
+                        "Not enough money for buying a card package"
+                );
+            }
+
+            if (aquiredPackage.isEmpty()) {
+                return new Response(
+                        HttpStatus.NOT_FOUND,
+                        ContentType.JSON,
+                        null,
+                        "No card package available for buying"
+                );
+            }
+
+            String cardJSON = getObjectMapper().writeValueAsString(aquiredPackage);
+
+            return new Response(
+                    HttpStatus.OK,
+                    ContentType.JSON,
+                    cardJSON,
+                    "A package has been successfully bought"
+            );
+        } catch (JsonProcessingException e) {
+            return new Response(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
 }
 
