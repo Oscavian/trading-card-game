@@ -2,8 +2,10 @@ package game.repos;
 
 import game.dao.CardDao;
 import game.dao.DeckEntryDao;
+import game.dao.PackageDao;
 import game.dao.StackEntryDao;
 import game.models.Card;
+import game.models.Package;
 import game.models.StackDeckEntry;
 import game.models.User;
 import game.services.CacheService;
@@ -23,12 +25,15 @@ public class CardRepo extends Repository<UUID, Card> {
     private CardDao cardDao;
     private StackEntryDao stackEntryDao;
     private DeckEntryDao deckEntryDao;
+
+    private PackageDao packageDao;
     private CacheService cacheService;
 
-    public CardRepo(CardDao cardDao, StackEntryDao stackEntryDao, DeckEntryDao deckEntryDao, CacheService cacheService) {
+    public CardRepo(CardDao cardDao, StackEntryDao stackEntryDao, DeckEntryDao deckEntryDao, PackageDao packageDao, CacheService cacheService) {
         setCardDao(cardDao);
         setStackEntryDao(stackEntryDao);
         setDeckEntryDao(deckEntryDao);
+        setPackageDao(packageDao);
         setCacheService(cacheService);
         refreshCache();
     }
@@ -117,7 +122,7 @@ public class CardRepo extends Repository<UUID, Card> {
 
             //check if card is in a stack
             var stackEntry = getCacheService().getUuidStackEntryCache().values().stream().filter(
-                    (entry) -> entry.getCard_uuid().equals(card.getId()))
+                            (entry) -> entry.getCard_uuid().equals(card.getId()))
                     .findAny()
                     .orElse(null);
 
@@ -126,7 +131,7 @@ public class CardRepo extends Repository<UUID, Card> {
             }
 
             //check if it belongs to the right user
-            if (!stackEntry.getUser_uuid().equals(user.getId())){
+            if (!stackEntry.getUser_uuid().equals(user.getId())) {
                 return false;
             }
         }
@@ -134,7 +139,7 @@ public class CardRepo extends Repository<UUID, Card> {
         //all cards okay, proceed
 
         //clear user's deck
-        for (var entry : getCacheService().getUuidDeckEntryCache().values()){
+        for (var entry : getCacheService().getUuidDeckEntryCache().values()) {
             if (entry.getUser_uuid().equals(user.getId())) {
                 try {
                     getDeckEntryDao().delete(entry);
@@ -144,6 +149,7 @@ public class CardRepo extends Repository<UUID, Card> {
             }
         }
 
+        //configure deck with new cards
         cards.forEach((card -> {
             try {
                 getDeckEntryDao().create(new StackDeckEntry(null, user.getId(), card.getId()));
@@ -155,6 +161,40 @@ public class CardRepo extends Repository<UUID, Card> {
         refreshCache();
 
         return true;
+    }
+
+    public boolean createPackage(List<Card> cards) {
+        checkCache();
+
+        //check if any provided card already exists
+        for (var card : cards) {
+            if (getCacheService().getUuidCardCache().containsKey(card.getId())) {
+                return false;
+            }
+        }
+
+        //create cards
+        cards.forEach((card) -> {
+            try {
+                if (card.getId() == null) {
+                    card.setId(getCardDao().create(card));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
+
+
+        try {
+            //create package
+            getPackageDao().create(new Package(null, null, cards));
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     @Override

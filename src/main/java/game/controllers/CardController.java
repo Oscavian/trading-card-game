@@ -32,6 +32,8 @@ public class CardController extends Controller {
     /**
      * GET /cards
      * Show a user's cards/stack
+     * @param username of the requesting User
+     * @return Array of cards
      */
     public Response getCards(String username) {
         if (username == null || username.isEmpty()) {
@@ -58,7 +60,7 @@ public class CardController extends Controller {
     /**
      * GET /decks
      * show a users configured deck
-     * @param username
+     * @param username of the requesting User
      * @return 200 or 500
      */
     public Response getDeck(String username) {
@@ -92,6 +94,12 @@ public class CardController extends Controller {
         }
     }
 
+    /**
+     * PUT /decks
+     * @param body list of UUIDs
+     * @param userlogin of the requesting User
+     * @return Response message
+     */
     public Response putDeck(String body, String userlogin) {
 
         try {
@@ -120,7 +128,44 @@ public class CardController extends Controller {
         } catch (JsonProcessingException | IllegalArgumentException e) {
             return new Response(HttpStatus.BAD_REQUEST);
         }
+    }
 
+    /**
+     * POST /packages
+     * @param body list of cards
+     * @return Response message
+     */
+    public Response postPackage(String body) {
+
+        try {
+            List<Card> cards = Arrays.asList(getObjectMapper().readValue(body, Card[].class));
+
+            if (cards.size() != 5) {
+                return new Response(HttpStatus.BAD_REQUEST);
+            }
+
+            if (getCardRepo().createPackage(cards)) {
+                return new Response(
+                        HttpStatus.CREATED,
+                        ContentType.JSON,
+                        null,
+                        "Package and cards successfully created"
+                );
+            } else {
+                return new Response(
+                        HttpStatus.CONFLICT,
+                        ContentType.JSON,
+                        null,
+                        "At least one card in the packages already exists"
+                );
+            }
+
+
+
+
+        } catch (JsonProcessingException | IllegalArgumentException e) {
+            return new Response(HttpStatus.BAD_REQUEST);
+        }
     }
 }
 

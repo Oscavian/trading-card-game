@@ -2,10 +2,7 @@ package game;
 
 import game.controllers.CardController;
 import game.controllers.UserController;
-import game.dao.CardDao;
-import game.dao.DeckEntryDao;
-import game.dao.StackEntryDao;
-import game.dao.UserDao;
+import game.dao.*;
 import game.repos.CardRepo;
 import game.repos.UserRepo;
 import game.services.AuthService;
@@ -20,8 +17,6 @@ import lombok.Setter;
 import server.Request;
 import server.Response;
 import server.ServerApp;
-
-import java.util.HashMap;
 
 @Setter(AccessLevel.PRIVATE)
 @Getter
@@ -45,7 +40,7 @@ public class Game implements ServerApp {
                 new UserController(
                         new UserRepo(
                                 new UserDao(databaseService.getConnection()),
-                                cacheService
+                                getCacheService()
                         ),
                         authService
                 )
@@ -56,7 +51,8 @@ public class Game implements ServerApp {
                                 new CardDao(databaseService.getConnection()),
                                 new StackEntryDao(databaseService.getConnection()),
                                 new DeckEntryDao(databaseService.getConnection()),
-                                cacheService
+                                new PackageDao(databaseService.getConnection()),
+                                getCacheService()
                         ),
                         authService
                 )
@@ -152,8 +148,13 @@ public class Game implements ServerApp {
     private Response handlePOST(Request request) {
         String path = request.getPathname();
 
+
         if (path.matches("/packages/?")) {
-            return null;
+            if (userLogin.equals("admin")) {
+                return cardController.postPackage(request.getBody());
+            } else {
+                return new Response(HttpStatus.FORBIDDEN);
+            }
         }
 
         if (path.matches("/transactions/packages?")) {
