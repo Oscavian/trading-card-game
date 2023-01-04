@@ -1,9 +1,6 @@
 package game.repos;
 
-import game.dao.CardDao;
-import game.dao.DeckEntryDao;
-import game.dao.PackageDao;
-import game.dao.StackEntryDao;
+import game.dao.*;
 import game.models.Card;
 import game.models.Package;
 import game.models.StackDeckEntry;
@@ -14,9 +11,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Getter(AccessLevel.PRIVATE)
 @Setter(AccessLevel.PRIVATE)
@@ -27,10 +23,13 @@ public class CardRepo extends Repository<UUID, Card> {
     private DeckEntryDao deckEntryDao;
 
     private PackageDao packageDao;
+
+    private UserDao userDao;
     private CacheService cacheService;
 
-    public CardRepo(CardDao cardDao, StackEntryDao stackEntryDao, DeckEntryDao deckEntryDao, PackageDao packageDao, CacheService cacheService) {
+    public CardRepo(CardDao cardDao, UserDao userDao, StackEntryDao stackEntryDao, DeckEntryDao deckEntryDao, PackageDao packageDao, CacheService cacheService) {
         setCardDao(cardDao);
+        setUserDao(userDao);
         setStackEntryDao(stackEntryDao);
         setDeckEntryDao(deckEntryDao);
         setPackageDao(packageDao);
@@ -184,7 +183,7 @@ public class CardRepo extends Repository<UUID, Card> {
             }
         });
 
-
+        refreshCache();
 
         try {
             //create package
@@ -195,6 +194,68 @@ public class CardRepo extends Repository<UUID, Card> {
         }
 
         return false;
+    }
+
+    public List<Card> aquirePackage(String username) {
+
+        User user = getCacheService().getUsernameUserCache().get(username);
+        if (user == null) {
+            throw new IllegalArgumentException("Invalid User given!");
+        }
+
+        //check money
+        if (user.getCoins() < 5) {
+            return null;
+        }
+
+        try {
+            //check if package available
+            var packages = getPackageDao().read().values();
+
+            var availablePackages = new ArrayList<Package>();
+
+            packages.forEach((pack) -> {
+                if (pack.getOwner() == null) {
+                    availablePackages.add(pack);
+                }
+            });
+
+            if (availablePackages.isEmpty()) {
+                return new ArrayList<>();
+            }
+
+            //choose package randomly
+            Package chosenPack = availablePackages.get(ThreadLocalRandom.current().nextInt(availablePackages.size()));
+
+            //fetch cards into package
+            var cardIds = getPackageDao().readCardIds(chosenPack.getUuid());
+            var cards = new ArrayList<Card>();
+            cardIds.forEach((id) -> cards.add(getById(id)));
+            chosenPack.setCards(cards);
+
+            //assign package cards to users stack
+            chosenPack.getCards().forEach((card) -> {
+                try {
+                    getStackEntryDao().create(new StackDeckEntry(null, user.getId(), card.getId()));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            //change package owner
+            chosenPack.setOwner(user.getId());
+            getPackageDao().update(chosenPack);
+
+            //decrease user coins
+            user.setCoins(user.getCoins() - 5);
+            getUserDao().update(user);
+
+            return chosenPack.getCards();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
     }
 
     @Override

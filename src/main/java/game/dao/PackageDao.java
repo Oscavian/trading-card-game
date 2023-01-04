@@ -1,11 +1,11 @@
 package game.dao;
 
-import game.models.Deck;
 import game.models.Package;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -54,16 +54,59 @@ public class PackageDao implements Dao<UUID, Package> {
 
     @Override
     public HashMap<UUID, Package> read() throws SQLException {
-        return null;
+        //String query = "SELECT uuid as package, owner, card from packages join packages_cards pc on packages.uuid = pc.package";
+        String query = "SELECT uuid, owner from packages";
+
+        PreparedStatement statement = getConnection().prepareStatement(query);
+        ResultSet res = statement.executeQuery();
+
+        var map = new HashMap<UUID, Package>();
+
+        while (res.next()) {
+            Package pack = new Package(
+                    res.getObject(1, UUID.class),
+                    res.getObject(2, UUID.class),
+                    null
+            );
+            map.put(pack.getUuid(), pack);
+        }
+
+        return map;
     }
 
     @Override
     public void update(Package pack) throws SQLException {
 
+        String query = "UPDATE packages SET owner = ? WHERE uuid = ?";
+
+        PreparedStatement statement = getConnection().prepareStatement(query);
+
+        statement.setObject(1, pack.getOwner());
+        statement.setObject(2, pack.getUuid());
+
+        statement.executeUpdate();
     }
 
     @Override
     public void delete(Package pack) throws SQLException {
 
+    }
+
+    public ArrayList<UUID> readCardIds(UUID packageId) throws SQLException {
+        String query = "SELECT card from packages_cards where package = ?";
+
+        PreparedStatement statement = getConnection().prepareStatement(query);
+
+        statement.setObject(1, packageId);
+
+        ResultSet res = statement.executeQuery();
+
+        var list = new ArrayList<UUID>();
+
+        while (res.next()) {
+            list.add(res.getObject(1, UUID.class));
+        }
+
+        return list;
     }
 }

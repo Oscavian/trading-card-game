@@ -49,6 +49,7 @@ public class Game implements ServerApp {
                 new CardController(
                         new CardRepo(
                                 new CardDao(databaseService.getConnection()),
+                                new UserDao(databaseService.getConnection()),
                                 new StackEntryDao(databaseService.getConnection()),
                                 new DeckEntryDao(databaseService.getConnection()),
                                 new PackageDao(databaseService.getConnection()),
@@ -158,7 +159,7 @@ public class Game implements ServerApp {
         }
 
         if (path.matches("/transactions/packages?")) {
-            return null;
+            return cardController.postTransactionsPackages(userLogin);
         }
 
         if (path.matches("/battles/?")) {

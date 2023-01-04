@@ -12,30 +12,38 @@ drop table if exists battle_logs;
 drop table if exists packages_cards;
 
 
-
-create table if not exists users
+create table if not exists public.users
 (
-    uuid     uuid default uuid_generate_v4() primary key,
-    username varchar(255) not null unique,
-    password varchar(512) not null,
+    uuid     uuid    default uuid_generate_v4() primary key,
+    username varchar(255)       not null unique,
+    password varchar(512)       not null,
     bio      text,
     image    text,
-    elo      int,
-    wins     int,
-    losses   int
+    elo      integer default 0
+        constraint check_elo_not_negative
+            check (elo >= 0),
+    wins     integer default 0
+        constraint check_wins_not_negative
+            check (wins >= 0),
+    losses   integer default 0
+        constraint check_losses_not_negative
+            check (losses >= 0),
+    coins    integer default 20                 not null
+        constraint check_coins_not_negative
+            check (coins >= 0)
 );
 
-create table if not exists cards
+create table if not exists public.cards
 (
     uuid   uuid default uuid_generate_v4() primary key,
     name   varchar(255) not null,
     damage float        not null
 );
 
-create table if not exists decks
+create table if not exists public.decks
 (
-    user_uuid uuid,
-    card_uuid uuid,
+    user_uuid  uuid,
+    card_uuid  uuid,
     entry_uuid uuid default uuid_generate_v4() not null,
     primary key (user_uuid, card_uuid, entry_uuid),
     constraint fk_decks_users
@@ -49,10 +57,10 @@ create table if not exists decks
 );
 
 
-create table if not exists stacks
+create table if not exists public.stacks
 (
-    user_uuid uuid,
-    card_uuid uuid,
+    user_uuid  uuid,
+    card_uuid  uuid,
     entry_uuid uuid default uuid_generate_v4() not null,
     primary key (user_uuid, card_uuid, entry_uuid),
     constraint fk_decks_users
@@ -66,7 +74,7 @@ create table if not exists stacks
 );
 
 
-create table if not exists tradings
+create table if not exists public.tradings
 (
     uuid           uuid,
     user_offering  uuid,
@@ -81,7 +89,7 @@ create table if not exists tradings
             references cards (uuid)
 );
 
-create table if not exists packages
+create table if not exists public.packages
 (
     uuid  uuid,
     owner uuid,
@@ -92,7 +100,7 @@ create table if not exists packages
             on delete set null
 );
 
-create table if not exists packages_cards
+create table if not exists public.packages_cards
 (
     package uuid,
     card    uuid,
@@ -107,7 +115,7 @@ create table if not exists packages_cards
             on delete cascade
 );
 
-create table if not exists battle_logs
+create table if not exists public.battle_logs
 (
     battle_uuid uuid,
     player1     uuid not null,
@@ -123,3 +131,27 @@ create table if not exists battle_logs
             references users (uuid)
             on delete no action
 );
+
+alter table public.users
+    owner to swe1user;
+
+alter table public.cards
+    owner to swe1user;
+
+alter table public.packages
+    owner to swe1user;
+
+alter table public.packages_cards
+    owner to swe1user;
+
+alter table public.decks
+    owner to swe1user;
+
+alter table public.stacks
+    owner to swe1user;
+
+alter table public.battle_logs
+    owner to swe1user;
+
+alter table public.tradings
+    owner to swe1user;

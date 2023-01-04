@@ -33,7 +33,7 @@ public class CardDao implements Dao<UUID, Card> {
 
 
         if (res.next()) {
-            return UUID.fromString(res.getString(1));
+            return res.getObject(1, UUID.class);
         }
         return null;
     }
