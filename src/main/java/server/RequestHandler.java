@@ -22,7 +22,7 @@ public class RequestHandler implements Runnable {
     private BufferedReader inputStream;
     private Game game;
 
-    RequestHandler(Game game, Socket clientSocket){
+    public RequestHandler(Game game, Socket clientSocket){
         setGame(game);
         setClientSocket(clientSocket);
     }
@@ -46,7 +46,7 @@ public class RequestHandler implements Runnable {
 
     }
 
-    private void sendResponse(Response response) {
+    public void sendResponse(Response response) {
         if (response == null){
             throw new IllegalArgumentException("Empty response!");
         }
@@ -88,6 +88,4 @@ public class RequestHandler implements Runnable {
             e.printStackTrace();
         }
     }
-
-
 }

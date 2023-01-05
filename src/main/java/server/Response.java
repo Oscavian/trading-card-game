@@ -4,10 +4,12 @@ import http.ContentType;
 import http.HttpStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter(AccessLevel.PRIVATE)
-@Setter(AccessLevel.PRIVATE)
+@Getter(AccessLevel.PUBLIC)
+@Setter(AccessLevel.PACKAGE)
+@NoArgsConstructor
 public class Response {
     private int statusCode;
     private String statusMessage;
@@ -16,7 +18,6 @@ public class Response {
     private ContentType contentType;
     private String content;
     private String description;
-
 
     public Response(HttpStatus status, ContentType contentType, String content, String description) {
         setStatusCode(status.getCode());
@@ -35,7 +36,7 @@ public class Response {
     }
 
 
-    protected String build() {
+    protected String build() throws IllegalArgumentException {
 
         switch (contentType) {
             case JSON -> setContent(
@@ -48,7 +49,7 @@ public class Response {
 
         return "HTTP/1.1 " + getStatusCode() + " " + getStatusMessage() + "\r\n" +
                "Content-Type: " + getContentType() + "\r\n" +
-               "Content-Length: " + getContent().length() + "\r\n\r\n" +
+               "Content-Length: " + getContent().getBytes().length + "\r\n\r\n" +
                 getContent();
     }
 }

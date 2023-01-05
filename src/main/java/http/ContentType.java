@@ -7,7 +7,9 @@ import lombok.Setter;
 public enum ContentType {
     HTML("text/html"),
     JSON("application/json"),
-    TEXT("text/plain");
+    TEXT("text/plain"),
+
+    UNKNOWN("error");
 
     @Getter
     @Setter(AccessLevel.PRIVATE)
