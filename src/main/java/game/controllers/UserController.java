@@ -54,7 +54,7 @@ public class UserController extends Controller {
      * TODO: auth (401)
      */
     public Response getUserByName(String name) {
-        UserData user = getUserRepo().getByName(name);
+        UserData user = getUserRepo().getUserDataByName(name);
 
         if (user != null) {
             try {

@@ -55,7 +55,7 @@ public class UserRepo extends Repository<UUID, User> {
         UUID uuid = null;
 
         //check for duplicate username
-        if (getByName(credentials.getUsername()) != null) {
+        if (getUserDataByName(credentials.getUsername()) != null) {
             return null;
         }
 
@@ -93,7 +93,15 @@ public class UserRepo extends Repository<UUID, User> {
         return true;
     }
 
-    public UserData getByName(String name) {
+    public User getByName(String name) {
+        if (name == null) {
+            return null;
+        }
+        checkCache();
+        return getCacheService().getUsernameUserCache().get(name);
+    }
+
+    public UserData getUserDataByName(String name) {
         if (name == null) {
             return null;
         }

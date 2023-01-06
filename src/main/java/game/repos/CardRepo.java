@@ -80,7 +80,7 @@ public class CardRepo extends Repository<UUID, Card> {
         User user = getCacheService().getUsernameUserCache().get(username);
 
         if (user == null) {
-            return null;
+            throw new IllegalArgumentException();
         }
 
         // join deck entries together by matching the user id

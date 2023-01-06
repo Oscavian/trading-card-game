@@ -38,8 +38,20 @@ public class Card {
 
         if (getName().contains("Spell")){
             setType(CardType.SPELL);
-        } else {
-            setType(CardType.MONSTER);
+        } else if (getName().contains("Goblin")) {
+            setType(CardType.GOBLIN);
+        } else if (getName().contains("Dragon")) {
+            setType(CardType.DRAGON);
+        } else if (getName().contains("Wizard")) {
+            setType(CardType.WIZARD);
+        } else if (getName().contains("Ork")) {
+            setType(CardType.ORK);
+        } else if (getName().contains("Kraken")) {
+            setType(CardType.KRAKEN);
+        } else if (getName().contains("Knight")) {
+            setType(CardType.KNIGHT);
+        } else if (getName().contains("Elve")) {
+            setType(CardType.ELVE);
         }
 
         if (getName().contains("Regular")){

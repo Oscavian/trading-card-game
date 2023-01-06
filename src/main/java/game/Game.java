@@ -1,8 +1,10 @@
 package game;
 
+import game.controllers.BattleController;
 import game.controllers.CardController;
 import game.controllers.UserController;
 import game.dao.*;
+import game.repos.BattleLogRepo;
 import game.repos.CardRepo;
 import game.repos.UserRepo;
 import game.services.AuthService;
@@ -18,6 +20,8 @@ import server.Request;
 import server.Response;
 import server.ServerApp;
 
+import java.util.Map;
+
 @Setter(AccessLevel.PRIVATE)
 @Getter
 public class Game implements ServerApp {
@@ -26,6 +30,8 @@ public class Game implements ServerApp {
     //CONTROLLER & SERVICES
     private UserController userController;
     private CardController cardController;
+
+    private BattleController battleController;
     private DatabaseService databaseService = new DatabaseService();
     private AuthService authService = new AuthService();
     private CacheService cacheService = new CacheService();
@@ -56,6 +62,26 @@ public class Game implements ServerApp {
                                 getCacheService()
                         ),
                         authService
+                )
+        );
+        setBattleController(
+                new BattleController(
+                        new UserRepo(
+                                new UserDao(databaseService.getConnection()),
+                                getCacheService()
+                        ),
+                        new CardRepo(
+                                new CardDao(databaseService.getConnection()),
+                                new UserDao(databaseService.getConnection()),
+                                new StackEntryDao(databaseService.getConnection()),
+                                new DeckEntryDao(databaseService.getConnection()),
+                                new PackageDao(databaseService.getConnection()),
+                                getCacheService()
+                        ),
+                        new BattleLogRepo(
+                                getCacheService(),
+                                new BattleLogDao()
+                        )
                 )
         );
     }
@@ -163,7 +189,7 @@ public class Game implements ServerApp {
         }
 
         if (path.matches("/battles/?")) {
-            return null;
+            return battleController.postBattle(userLogin);
         }
 
         if (path.matches("/tradings/?")) {
