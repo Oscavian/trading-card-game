@@ -49,25 +49,25 @@ public class TestUserController {
         //assert
         verify(m_userRepo).getAllUserData();
         assertEquals(HttpStatus.OK.getMsg(), res.getStatusMessage());
-        assertEquals("[{\"username\":\"admin\",\"bio\":\"hi\",\"image\":\":)\"}]", res.getContent());
+        assertEquals("[{\"Name\":\"admin\",\"Bio\":\"hi\",\"Image\":\":)\"}]", res.getContent());
     }
 
     @Test
     void testGetUserByNameValidName() {
         //arrange
-        when(m_userRepo.getByName("admin")).thenReturn(new UserData("admin", "hi", ":)"));
+        when(m_userRepo.getUserDataByName("admin")).thenReturn(new UserData("admin", "hi", ":)"));
 
         //act
         Response response = userController.getUserByName("admin");
 
         //assert
-        verify(m_userRepo).getByName("admin");
+        verify(m_userRepo).getUserDataByName("admin");
         assertEquals(HttpStatus.OK.getMsg(), response.getStatusMessage());
         assertEquals(ContentType.JSON, response.getContentType());
         assertEquals("{" +
-                "\"username\":\"admin\"," +
-                "\"bio\":\"hi\"," +
-                "\"image\":\":)\"" +
+                "\"Name\":\"admin\"," +
+                "\"Bio\":\"hi\"," +
+                "\"Image\":\":)\"" +
                 "}", response.getContent());
     }
 
