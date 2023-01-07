@@ -1,6 +1,7 @@
 package game.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import game.dto.UserStats;
 import game.models.BattleLog;
 import game.models.User;
 import game.repos.BattleLogRepo;
@@ -15,6 +16,8 @@ import lombok.Setter;
 import org.w3c.dom.html.HTMLTableCaptionElement;
 import server.Response;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
@@ -84,6 +87,52 @@ public class BattleController extends Controller {
                 null,
                 "The battle has been carried out successfully"
         );
+    }
+
+    /**
+     * GET /stats
+     * @param userLogin
+     * @return
+     */
+    public Response getStats(String userLogin) {
+
+        User user = Objects.requireNonNull(getUserRepo().getByName(userLogin));
+
+        try {
+            String statsJson = getObjectMapper().writeValueAsString(user.toUserData());
+
+            return new Response(
+                    HttpStatus.OK,
+                    ContentType.JSON,
+                    statsJson,
+                    "The stats could be retrieved successfully."
+            );
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return new Response(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * GET /scores
+     * @return
+     */
+    public Response getScores() {
+
+        List<UserStats> list = getUserRepo().getAllUserStats();
+
+        try {
+            String listJson = getObjectMapper().writeValueAsString(list);
+            return new Response(
+                    HttpStatus.OK,
+                    ContentType.JSON,
+                    listJson,
+                    "The scoreboard could be retrieved successfully."
+            );
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return new Response(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 

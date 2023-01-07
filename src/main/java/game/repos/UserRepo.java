@@ -1,6 +1,7 @@
 package game.repos;
 
 import game.dao.UserDao;
+import game.dto.UserStats;
 import game.models.User;
 import game.dto.UserCredentials;
 import game.dto.UserData;
@@ -36,6 +37,13 @@ public class UserRepo extends Repository<UUID, User> {
         checkCache();
         var list = new ArrayList<UserData>();
         getCacheService().getUuidUserCache().values().forEach((user) -> list.add(user.toUserData()));
+        return list;
+    }
+
+    public ArrayList<UserStats> getAllUserStats() {
+        checkCache();
+        var list = new ArrayList<UserStats>();
+        getCacheService().getUuidUserCache().values().forEach((user -> list.add(user.toUserStats())));
         return list;
     }
 

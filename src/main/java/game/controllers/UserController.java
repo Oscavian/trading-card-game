@@ -51,7 +51,7 @@ public class UserController extends Controller {
 
     /**
      * GET /users/{username}
-     * TODO: auth (401)
+     *
      */
     public Response getUserByName(String name) {
         UserData user = getUserRepo().getUserDataByName(name);
@@ -137,6 +137,12 @@ public class UserController extends Controller {
         }
     }
 
+    /**
+     * POST /sessions
+     * @param body
+     * @return
+     */
+
     public Response loginUser(String body) {
 
         try {
@@ -165,7 +171,4 @@ public class UserController extends Controller {
         }
     }
 
-    public Response getUsersLoggedIn() {
-        return null;
-    }
 }
