@@ -39,7 +39,7 @@ public class UserDao implements Dao<UUID, User> {
     @Override
     public HashMap<UUID, User> read() throws SQLException {
 
-        String query = "SELECT uuid, username, password, bio, image, elo, wins, losses, coins from users;";
+        String query = "SELECT uuid, username, password, bio, image, elo, wins, losses, coins, fullname from users;";
 
         PreparedStatement statement = getConnection().prepareStatement(query);
 
@@ -52,6 +52,7 @@ public class UserDao implements Dao<UUID, User> {
                     UUID.fromString(resultSet.getString("uuid")),
                     resultSet.getString("username"),
                     resultSet.getString("password"),
+                    resultSet.getString("fullname"),
                     resultSet.getString("bio"),
                     resultSet.getString("image"),
                     resultSet.getInt("elo"),
@@ -68,7 +69,7 @@ public class UserDao implements Dao<UUID, User> {
 
     public HashMap<String, User> read_returningMapByName() throws SQLException {
 
-        String query = "SELECT uuid, username, password, bio, image, elo, wins, losses, coins from users;";
+        String query = "SELECT uuid, username, password, bio, image, elo, wins, losses, coins, fullname from users;";
 
         PreparedStatement statement = getConnection().prepareStatement(query);
 
@@ -81,6 +82,7 @@ public class UserDao implements Dao<UUID, User> {
                     UUID.fromString(resultSet.getString("uuid")),
                     resultSet.getString("username"),
                     resultSet.getString("password"),
+                    resultSet.getString("fullname"),
                     resultSet.getString("bio"),
                     resultSet.getString("image"),
                     resultSet.getInt("elo"),
@@ -107,8 +109,8 @@ public class UserDao implements Dao<UUID, User> {
         if (user.getPassword() != null && !user.getPassword().isEmpty()){
             params.add("password = ?");
         }
-        if (user.getUsername() != null && !user.getUsername().isEmpty()) {
-            params.add("username = ?");
+        if (user.getFullname() != null) {
+            params.add("fullname = ?");
         }
         if (user.getBio() != null) {
             params.add("bio = ?");
@@ -144,8 +146,8 @@ public class UserDao implements Dao<UUID, User> {
         if (params.contains("password = ?")) {
             statement.setString(parameterIndex++, user.getPassword());
         }
-        if (params.contains("username = ?")) {
-            statement.setString(parameterIndex++, user.getUsername());
+        if (params.contains("fullname = ?")) {
+            statement.setString(parameterIndex++, user.getFullname());
         }
         if (params.contains("bio = ?")) {
             statement.setString(parameterIndex++, user.getBio());

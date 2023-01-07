@@ -13,7 +13,7 @@ import lombok.Setter;
 public class UserData {
     @JsonAlias({"Name"})
     @JsonProperty("Name")
-    private String username;
+    private String name;
     @JsonAlias({"Bio"})
     @JsonProperty("Bio")
     private String bio;
@@ -22,26 +22,4 @@ public class UserData {
     private String image;
 
     UserData(){}
-
-    public UserData(User user) {
-        if (user == null) {
-            return;
-        }
-        setUsername(user.getUsername());
-        setBio(user.getBio());
-        setImage(user.getImage());
-    }
-
-    /**
-     * Converts an instance of UserData to User.
-     * USE WITH CAUTION as the returned instance does not map to the database.
-     * @return an instance of User with the fields 'username', 'bio' & 'image' set.
-     */
-    public User toUser() {
-        User u = new User();
-        u.setUsername(getUsername());
-        u.setBio(getBio());
-        u.setImage(getImage());
-        return u;
-    }
 }

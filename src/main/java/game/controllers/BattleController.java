@@ -13,7 +13,6 @@ import http.HttpStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.w3c.dom.html.HTMLTableCaptionElement;
 import server.Response;
 
 import java.util.List;
@@ -21,7 +20,6 @@ import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 @Setter(AccessLevel.PRIVATE)
 @Getter(AccessLevel.PRIVATE)
@@ -99,7 +97,7 @@ public class BattleController extends Controller {
         User user = Objects.requireNonNull(getUserRepo().getByName(userLogin));
 
         try {
-            String statsJson = getObjectMapper().writeValueAsString(user.toUserData());
+            String statsJson = getObjectMapper().writeValueAsString(user.toUserStats());
 
             return new Response(
                     HttpStatus.OK,

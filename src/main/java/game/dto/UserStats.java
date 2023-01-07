@@ -12,9 +12,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserStats {
 
-    @JsonAlias({"Username"})
-    @JsonProperty("Username")
-    private String username;
+    @JsonAlias({"Name"})
+    @JsonProperty("Name")
+    private String name;
 
     @JsonAlias({"Elo"})
     @JsonProperty("Elo")
@@ -29,29 +29,4 @@ public class UserStats {
     private int losses;
 
     public UserStats(){}
-
-    public UserStats(User user) {
-        if (user == null) {
-            return;
-        }
-        setUsername(user.getUsername());
-        setElo(user.getElo());
-        setWins(user.getWins());
-        setLosses(user.getLosses());
-    }
-
-    /**
-     * Converts an instance of UserStats to User.
-     * USE WITH CAUTION as the returned instance does not map to the database.
-     * @return an instance of User with the fields 'username', 'elo', 'wins' & 'losses' set.
-     */
-    public User toUser() {
-        User u = new User();
-        setUsername(getUsername());
-        setElo(getElo());
-        setWins(getWins());
-        setLosses(getLosses());
-        return u;
-    }
-
 }

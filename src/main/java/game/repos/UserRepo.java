@@ -86,7 +86,7 @@ public class UserRepo extends Repository<UUID, User> {
             return false;
         }
 
-        user.setUsername(userData.getUsername());
+        user.setFullname(userData.getName());
         user.setBio(userData.getBio());
         user.setImage(userData.getImage());
 

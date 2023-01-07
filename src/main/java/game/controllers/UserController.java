@@ -122,7 +122,6 @@ public class UserController extends Controller {
             UserData userData = getObjectMapper().readValue(body, UserData.class);
 
             if (getUserRepo().updateUser(userData, username)) {
-                getAuthService().logout(username);
                 return new Response(
                         HttpStatus.OK,
                         ContentType.JSON,

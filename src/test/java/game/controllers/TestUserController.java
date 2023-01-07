@@ -123,7 +123,6 @@ public class TestUserController {
 
         //assert
         verify(m_userRepo).updateUser(any(), any());
-        verify(m_authService).logout("admin");
         assertEquals(HttpStatus.OK.getCode(), res.getStatusCode());
     }
 

@@ -18,6 +18,8 @@ public class User {
     private String username;
     private String password;
 
+    private String fullname;
+
     private String bio;
     private String image;
 
@@ -32,10 +34,11 @@ public class User {
 
     private ArrayList<Card> stack = new ArrayList<>();
 
-    public User(UUID id, String username, String password, String bio, String image, int elo, int wins, int losses, int coins) {
+    public User(UUID id, String username, String password, String fullname, String bio, String image, int elo, int wins, int losses, int coins) {
         setId(id);
         setUsername(username);
         setPassword(password);
+        setFullname(fullname);
         setBio(bio);
         setImage(image);
         setElo(elo);
@@ -49,10 +52,10 @@ public class User {
     }
 
     public UserData toUserData() {
-        return new UserData(username, bio, image);
+        return new UserData(fullname == null || fullname.isEmpty() ? username : fullname, bio, image);
     }
 
     public UserStats toUserStats() {
-        return new UserStats(username, elo, wins, losses);
+        return new UserStats(fullname == null || fullname.isEmpty() ? username : fullname, elo, wins, losses);
     }
 }
