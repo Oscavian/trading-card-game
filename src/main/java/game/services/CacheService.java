@@ -50,6 +50,10 @@ public class CacheService {
     }
 
     protected  <ID, T> void refresh(Map<ID, T> newCache, Map<ID, T> oldCache) {
+
+        oldCache.clear();
+        oldCache.putAll(newCache);
+        /*
         //prune deleted entries
         if (!newCache.keySet().equals(oldCache.keySet())) {
             List<ID> oldKeys = new ArrayList<>();
@@ -71,5 +75,6 @@ public class CacheService {
                             u1.equals(u2) ? u1 : u2
             );
         }
+         */
     }
 }
