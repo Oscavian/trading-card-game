@@ -30,7 +30,8 @@ create table if not exists public.users
             check (losses >= 0),
     coins    integer default 20                 not null
         constraint check_coins_not_negative
-            check (coins >= 0)
+            check (coins >= 0),
+    fullname varchar(255)
 );
 
 create table if not exists public.cards
