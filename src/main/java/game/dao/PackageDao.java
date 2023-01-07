@@ -74,6 +74,26 @@ public class PackageDao implements Dao<UUID, Package> {
         return map;
     }
 
+    public ArrayList<Package> readOrderedByCreation() throws SQLException {
+        String query = "SELECT uuid, owner from packages ORDER BY creation";
+
+        PreparedStatement statement = getConnection().prepareStatement(query);
+        ResultSet res = statement.executeQuery();
+
+        var list = new ArrayList<Package>();
+
+        while (res.next()) {
+            Package pack = new Package(
+                    res.getObject(1, UUID.class),
+                    res.getObject(2, UUID.class),
+                    null
+            );
+            list.add(pack);
+        }
+
+        return list;
+    }
+
     @Override
     public void update(Package pack) throws SQLException {
 

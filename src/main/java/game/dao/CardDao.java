@@ -23,11 +23,24 @@ public class CardDao implements Dao<UUID, Card> {
 
     @Override
     public UUID create(Card card) throws SQLException {
-        String query = "INSERT INTO cards (name, damage) VALUES (?, ?) RETURNING uuid";
+        String query;
+
+        if (card.getId() != null) {
+            query = "INSERT INTO cards (uuid, name, damage) VALUES (?, ?, ?) RETURNING uuid";
+        } else {
+            query = "INSERT INTO cards (name, damage) VALUES (?, ?) RETURNING uuid";
+        }
 
         PreparedStatement statement = getConnection().prepareStatement(query);
-        statement.setString(1, card.getName());
-        statement.setFloat(2, card.getDamage());
+
+        if (card.getId() != null) {
+            statement.setObject(1, card.getId());
+            statement.setString(2, card.getName());
+            statement.setFloat(3, card.getDamage());
+        } else {
+            statement.setString(1, card.getName());
+            statement.setFloat(2, card.getDamage());
+        }
 
         ResultSet res = statement.executeQuery();
 
