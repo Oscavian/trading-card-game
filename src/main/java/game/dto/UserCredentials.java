@@ -1,6 +1,7 @@
 package game.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import game.models.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -13,8 +14,10 @@ import lombok.Setter;
 public class UserCredentials {
 
     @JsonAlias({"Username"})
+    @JsonProperty("Username")
     private String username;
     @JsonAlias({"Password"})
+    @JsonProperty("Password")
     private String password;
     UserCredentials(){}
 

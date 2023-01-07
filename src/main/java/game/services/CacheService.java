@@ -22,13 +22,13 @@ public class CacheService {
     public synchronized void refreshUuidUserCache(HashMap<UUID, User> newCache) {
 
         refresh(newCache, uuidUserCache);
-        //System.out.println("Cache<UUID, User> refreshed! Contents: \n" + uuidUserCache);
+        System.out.println("Cache<UUID, User> refreshed! Contents: \n" + uuidUserCache);
 
     }
 
     public synchronized void refreshUsernameUserCache(HashMap<String, User> newCache) {
         refresh(newCache, usernameUserCache);
-        //System.out.println("Cache<Username, User> refreshed! Contents: \n" + usernameUserCache);
+        System.out.println("Cache<Username, User> refreshed! Contents: \n" + usernameUserCache);
     }
 
     public synchronized void refreshUuidCardCache(HashMap<UUID, Card> newCache) {

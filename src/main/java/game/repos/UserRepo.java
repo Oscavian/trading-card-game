@@ -1,6 +1,7 @@
 package game.repos;
 
 import game.dao.UserDao;
+import game.dto.UserStats;
 import game.models.User;
 import game.dto.UserCredentials;
 import game.dto.UserData;
@@ -39,6 +40,13 @@ public class UserRepo extends Repository<UUID, User> {
         return list;
     }
 
+    public ArrayList<UserStats> getAllUserStats() {
+        checkCache();
+        var list = new ArrayList<UserStats>();
+        getCacheService().getUuidUserCache().values().forEach((user -> list.add(user.toUserStats())));
+        return list;
+    }
+
     public boolean checkCredentials(UserCredentials credentials) {
         refreshCache();
         User foundUser = getCacheService().getUsernameUserCache().get(credentials.getUsername());
@@ -55,7 +63,7 @@ public class UserRepo extends Repository<UUID, User> {
         UUID uuid = null;
 
         //check for duplicate username
-        if (getByName(credentials.getUsername()) != null) {
+        if (getUserDataByName(credentials.getUsername()) != null) {
             return null;
         }
 
@@ -93,7 +101,15 @@ public class UserRepo extends Repository<UUID, User> {
         return true;
     }
 
-    public UserData getByName(String name) {
+    public User getByName(String name) {
+        if (name == null) {
+            return null;
+        }
+        checkCache();
+        return getCacheService().getUsernameUserCache().get(name);
+    }
+
+    public UserData getUserDataByName(String name) {
         if (name == null) {
             return null;
         }

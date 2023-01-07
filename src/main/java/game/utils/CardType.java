@@ -1,6 +1,12 @@
 package game.utils;
 
 public enum CardType {
-    MONSTER,
+    GOBLIN,
+    DRAGON,
+    WIZARD,
+    ORK,
+    KNIGHT,
+    KRAKEN,
+    ELVE,
     SPELL
 }

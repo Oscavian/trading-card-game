@@ -5,6 +5,7 @@ import game.dto.UserData;
 import game.dto.UserStats;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Getter
@@ -26,6 +27,22 @@ public class User {
     private int losses = 0;
 
     private int coins = 0;
+
+    private ArrayList<Card> deck = new ArrayList<>();
+
+    private ArrayList<Card> stack = new ArrayList<>();
+
+    public User(UUID id, String username, String password, String bio, String image, int elo, int wins, int losses, int coins) {
+        setId(id);
+        setUsername(username);
+        setPassword(password);
+        setBio(bio);
+        setImage(image);
+        setElo(elo);
+        setWins(wins);
+        setLosses(losses);
+        setCoins(coins);
+    }
 
     public UserCredentials toUserCredentials() {
         return new UserCredentials(username, password);

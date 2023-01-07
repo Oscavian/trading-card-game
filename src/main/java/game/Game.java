@@ -1,8 +1,10 @@
 package game;
 
+import game.controllers.BattleController;
 import game.controllers.CardController;
 import game.controllers.UserController;
 import game.dao.*;
+import game.repos.BattleLogRepo;
 import game.repos.CardRepo;
 import game.repos.UserRepo;
 import game.services.AuthService;
@@ -18,17 +20,29 @@ import server.Request;
 import server.Response;
 import server.ServerApp;
 
+import java.util.Map;
+
 @Setter(AccessLevel.PRIVATE)
 @Getter
 public class Game implements ServerApp {
 
 
-    //CONTROLLER & SERVICES
+    //CONTROLLER
     private UserController userController;
     private CardController cardController;
+    private BattleController battleController;
+
+
+
+    //SERVICES
     private DatabaseService databaseService = new DatabaseService();
     private AuthService authService = new AuthService();
     private CacheService cacheService = new CacheService();
+
+    //REPOSITORIES
+    //private UserRepo userRepo = new UserRepo(new UserDao(databaseService.getConnection()), getCacheService());
+    //private CardRepo cardRepo;
+    //private BattleLogRepo battleLogRepo;
 
     private final String UUID_REGEX = "^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$";
 
@@ -42,7 +56,7 @@ public class Game implements ServerApp {
                                 new UserDao(databaseService.getConnection()),
                                 getCacheService()
                         ),
-                        authService
+                        getAuthService()
                 )
         );
         setCardController(
@@ -55,7 +69,27 @@ public class Game implements ServerApp {
                                 new PackageDao(databaseService.getConnection()),
                                 getCacheService()
                         ),
-                        authService
+                        getAuthService()
+                )
+        );
+        setBattleController(
+                new BattleController(
+                        new UserRepo(
+                                new UserDao(databaseService.getConnection()),
+                                getCacheService()
+                        ),
+                        new CardRepo(
+                                new CardDao(databaseService.getConnection()),
+                                new UserDao(databaseService.getConnection()),
+                                new StackEntryDao(databaseService.getConnection()),
+                                new DeckEntryDao(databaseService.getConnection()),
+                                new PackageDao(databaseService.getConnection()),
+                                getCacheService()
+                        ),
+                        new BattleLogRepo(
+                                getCacheService(),
+                                new BattleLogDao()
+                        )
                 )
         );
     }
@@ -127,11 +161,11 @@ public class Game implements ServerApp {
         }
 
         if (path.matches("/stats/?")) {
-            return null;
+            return battleController.getStats(userLogin);
         }
 
         if (path.matches("/scores/?")) {
-            return null;
+            return battleController.getScores();
         }
 
         if (path.matches("/tradings/?")) {
@@ -163,7 +197,7 @@ public class Game implements ServerApp {
         }
 
         if (path.matches("/battles/?")) {
-            return null;
+            return battleController.postBattle(userLogin);
         }
 
         if (path.matches("/tradings/?")) {

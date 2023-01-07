@@ -12,7 +12,6 @@ import lombok.Setter;
 
 import java.sql.SQLException;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Getter(AccessLevel.PRIVATE)
 @Setter(AccessLevel.PRIVATE)
@@ -80,7 +79,7 @@ public class CardRepo extends Repository<UUID, Card> {
         User user = getCacheService().getUsernameUserCache().get(username);
 
         if (user == null) {
-            return null;
+            throw new IllegalArgumentException();
         }
 
         // join deck entries together by matching the user id
@@ -105,19 +104,18 @@ public class CardRepo extends Repository<UUID, Card> {
 
         var cards = new ArrayList<Card>();
 
+        //get user obj
         User user = getCacheService().getUsernameUserCache().get(username);
 
         //get cards from cache
         cardIds.forEach(uuid -> cards.add(getCacheService().getUuidCardCache().get(uuid)));
 
-        //check if cards all belong to user
-        for (var id : cardIds) {
-            //check if card exists
-            Card card = getCacheService().getUuidCardCache().get(id);
+        if (cards.size() != 4) {
+            return false;
+        }
 
-            if (card == null) {
-                return false;
-            }
+        //check if cards all belong to user
+        for (var card : cards) {
 
             //check if card is in a stack
             var stackEntry = getCacheService().getUuidStackEntryCache().values().stream().filter(
@@ -126,11 +124,13 @@ public class CardRepo extends Repository<UUID, Card> {
                     .orElse(null);
 
             if (stackEntry == null) {
+                System.err.printf("Card %s not found in any stack!\n", card.getId());
                 return false;
             }
 
             //check if it belongs to the right user
             if (!stackEntry.getUser_uuid().equals(user.getId())) {
+                System.err.printf("%s does not belong to %s\n", card.getId(), user.getUsername());
                 return false;
             }
         }
@@ -149,15 +149,19 @@ public class CardRepo extends Repository<UUID, Card> {
         }
 
         //configure deck with new cards
-        cards.forEach((card -> {
+
+        for(var card : cards) {
             try {
                 getDeckEntryDao().create(new StackDeckEntry(null, user.getId(), card.getId()));
             } catch (SQLException e) {
                 e.printStackTrace();
+                throw new RuntimeException("Error creating Deck entries!");
             }
-        }));
+        }
 
         refreshCache();
+
+        System.out.printf("Deck from %s configured as:\n%s", user.getUsername(), getUserDeck(user.getUsername()).toString());
 
         return true;
     }
@@ -175,9 +179,7 @@ public class CardRepo extends Repository<UUID, Card> {
         //create cards
         cards.forEach((card) -> {
             try {
-                if (card.getId() == null) {
-                    card.setId(getCardDao().create(card));
-                }
+                card.setId(getCardDao().create(card));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -210,28 +212,32 @@ public class CardRepo extends Repository<UUID, Card> {
 
         try {
             //check if package available
-            var packages = getPackageDao().read().values();
+            var packages = getPackageDao().readOrderedByCreation();
 
             var availablePackages = new ArrayList<Package>();
 
-            packages.forEach((pack) -> {
+            for (var pack : packages){
                 if (pack.getOwner() == null) {
                     availablePackages.add(pack);
                 }
-            });
+            }
 
             if (availablePackages.isEmpty()) {
                 return new ArrayList<>();
             }
 
-            //choose package randomly
-            Package chosenPack = availablePackages.get(ThreadLocalRandom.current().nextInt(availablePackages.size()));
+            Package chosenPack = availablePackages.get(0);
 
             //fetch cards into package
             var cardIds = getPackageDao().readCardIds(chosenPack.getUuid());
             var cards = new ArrayList<Card>();
             cardIds.forEach((id) -> cards.add(getById(id)));
             chosenPack.setCards(cards);
+
+            System.out.printf("\nPackage chosen for %s:\n", user.getUsername());
+            for (var c : chosenPack.getCards()){
+                System.out.printf("%s\n", c.getId());
+            }
 
             //assign package cards to users stack
             chosenPack.getCards().forEach((card) -> {
@@ -250,6 +256,7 @@ public class CardRepo extends Repository<UUID, Card> {
             user.setCoins(user.getCoins() - 5);
             getUserDao().update(user);
 
+            refreshCache();
             return chosenPack.getCards();
 
         } catch (SQLException e) {
@@ -273,6 +280,8 @@ public class CardRepo extends Repository<UUID, Card> {
             getCacheService().refreshUuidCardCache(getCardDao().read());
             getCacheService().refreshStackEntryCache(getStackEntryDao().read());
             getCacheService().refreshDeckEntryCache(getDeckEntryDao().read());
+            getCacheService().refreshUuidUserCache(getUserDao().read());
+            getCacheService().refreshUsernameUserCache(getUserDao().read_returningMapByName());
         } catch (SQLException e) {
             e.printStackTrace();
         }
