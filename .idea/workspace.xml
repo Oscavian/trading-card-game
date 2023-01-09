@@ -5,18 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53629a6e-3129-4c8a-bd4f-5d57cefae739" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/diagram.puml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/user/AdminUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/user/BaseUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/user/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/game/dao/TradingDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/ddl.sql" beforeDir="false" afterPath="$PROJECT_DIR$/db/ddl.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/controllers/CardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/controllers/CardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/models/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/models/Card.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/models/TradingDeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/models/TradingDeal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/http/HttpStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/http/HttpStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/game/TestGame.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/game/controllers/TestCardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/game/controllers/TestCardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/game/controllers/TestUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/game/controllers/TestUserController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,12 +27,17 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="paths/game" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -43,30 +49,106 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
-  <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="mtcg" />
+}]]></component>
+  <component name="RunManager" selected="JUnit.TestCardController">
+    <configuration name="All in trading-card-game" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="trading-card-game" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TestCardController" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="trading-card-game" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="game.controllers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="game.controllers" />
+      <option name="MAIN_CLASS_NAME" value="game.controllers.TestCardController" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestCardController.testPostTransactionsNoMoney" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="trading-card-game" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="game.controllers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="game.controllers" />
+      <option name="MAIN_CLASS_NAME" value="game.controllers.TestCardController" />
+      <option name="METHOD_NAME" value="testPostTransactionsNoMoney" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestCardController.testPostTransactionsNoPackages" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="trading-card-game" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="game.controllers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="game.controllers" />
+      <option name="MAIN_CLASS_NAME" value="game.controllers.TestCardController" />
+      <option name="METHOD_NAME" value="testPostTransactionsNoPackages" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestCardController.testPostTransactionsPackages" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="trading-card-game" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="game.controllers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="game.controllers" />
+      <option name="MAIN_CLASS_NAME" value="game.controllers.TestCardController" />
+      <option name="METHOD_NAME" value="testPostTransactionsPackages" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.All in trading-card-game" />
+      <item itemvalue="JUnit.TestCardController" />
+      <item itemvalue="JUnit.TestCardController.testPostTransactionsNoMoney" />
+      <item itemvalue="JUnit.TestCardController.testPostTransactionsNoPackages" />
+      <item itemvalue="JUnit.TestCardController.testPostTransactionsPackages" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.TestCardController" />
+        <item itemvalue="JUnit.TestCardController.testPostTransactionsNoPackages" />
+        <item itemvalue="JUnit.TestCardController.testPostTransactionsNoMoney" />
+        <item itemvalue="JUnit.TestCardController.testPostTransactionsPackages" />
+        <item itemvalue="JUnit.All in trading-card-game" />
       </list>
     </recent_temporary>
   </component>
@@ -91,6 +173,28 @@
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
+        <entry key="0d9e7bcf-cf44-46e8-8ef9-1ca2d9db16e4">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State />
@@ -98,5 +202,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

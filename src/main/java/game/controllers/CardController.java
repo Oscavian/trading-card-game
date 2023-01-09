@@ -2,9 +2,7 @@ package game.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import game.models.Card;
-import game.models.User;
 import game.repos.CardRepo;
-import game.services.AuthService;
 import http.ContentType;
 import http.HttpStatus;
 import lombok.AccessLevel;
@@ -12,7 +10,6 @@ import lombok.Getter;
 import lombok.Setter;
 import server.Response;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -22,11 +19,9 @@ import java.util.UUID;
 public class CardController extends Controller {
 
     private CardRepo cardRepo;
-    private AuthService authService;
 
-    public CardController(CardRepo cardRepo, AuthService authService) {
+    public CardController(CardRepo cardRepo) {
         setCardRepo(cardRepo);
-        setAuthService(authService);
     }
 
     /**

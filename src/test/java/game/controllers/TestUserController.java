@@ -117,12 +117,12 @@ public class TestUserController {
                 "\"Image\":\":)\"" +
                 "}";
         String username = "admin";
-        when(m_userRepo.updateUser(any(UserData.class), any(String.class))).thenReturn(true);
+        when(m_userRepo.updateUserData(any(UserData.class), any(String.class))).thenReturn(true);
         //act
         Response res = userController.updateUser(body, username);
 
         //assert
-        verify(m_userRepo).updateUser(any(), any());
+        verify(m_userRepo).updateUserData(any(), any());
         assertEquals(HttpStatus.OK.getCode(), res.getStatusCode());
     }
 
@@ -136,13 +136,13 @@ public class TestUserController {
         String username = "admin";
 
         //arrange
-        when(m_userRepo.updateUser(any(UserData.class), any(String.class))).thenReturn(false);
+        when(m_userRepo.updateUserData(any(UserData.class), any(String.class))).thenReturn(false);
 
         //act
         Response res = userController.updateUser(body, username);
 
         //assert
-        verify(m_userRepo).updateUser(any(), any());
+        verify(m_userRepo).updateUserData(any(), any());
         assertEquals(HttpStatus.NOT_FOUND.getCode(), res.getStatusCode());
 
     }

@@ -2,6 +2,7 @@ package game.models;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import game.utils.CardType;
 import game.utils.Element;
 import lombok.AccessLevel;
@@ -16,11 +17,14 @@ import java.util.UUID;
 public class Card {
 
     @JsonAlias({"Id"})
+    @JsonProperty("Id")
     private UUID id;
 
     @JsonAlias({"Name"})
+    @JsonProperty("Name")
     private String name;
     @JsonAlias({"Damage"})
+    @JsonProperty("Damage")
     private Float damage;
 
     @JsonIgnore
