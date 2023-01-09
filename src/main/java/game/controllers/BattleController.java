@@ -2,9 +2,7 @@ package game.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import game.dto.UserStats;
-import game.models.BattleLog;
 import game.models.User;
-import game.repos.BattleLogRepo;
 import game.repos.CardRepo;
 import game.repos.UserRepo;
 import game.services.BattleService;
@@ -29,12 +27,10 @@ public class BattleController extends Controller {
     private UserRepo userRepo;
 
     private CardRepo cardRepo;
-    private BattleLogRepo battleLogRepo;
 
 
-    public BattleController(UserRepo userRepo, CardRepo cardRepo, BattleLogRepo battleLogRepo) {
+    public BattleController(UserRepo userRepo, CardRepo cardRepo) {
         setUserRepo(userRepo);
-        setBattleLogRepo(battleLogRepo);
         setCardRepo(cardRepo);
     }
 
@@ -48,9 +44,9 @@ public class BattleController extends Controller {
 
         user.getDeck().addAll(getCardRepo().getUserDeck(user.getUsername()));
 
+        BattleService battle = new BattleService(user);
+        BattleService incomingBattle = null;
         try {
-            BattleService battle = new BattleService(user);
-            BattleService incomingBattle = null;
 
             while (incomingBattle == null && !queue.offer(battle)) {
                 incomingBattle = queue.poll();
@@ -62,22 +58,23 @@ public class BattleController extends Controller {
                 battle = incomingBattle;
                 battle.setOpponent(user);
                 battle.startBattle();
-                String logJSON = getObjectMapper().writeValueAsString(battle.getLog());
-
-                return new Response(
-                        HttpStatus.OK,
-                        ContentType.TEXT,
-                        logJSON,
-                        "The battle has been carried out successfully"
-                );
             }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return new Response(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        catch (ExecutionException | InterruptedException e) {
+
+        } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        if (battle.getWinner() != null) {
+            if (battle.getWinner().equals(user)) { // current thread is winning one
+                user.setElo(user.getElo() + 3);
+                user.setWins(user.getWins() + 1);
+            } else { // losing one
+                user.setLosses(user.getLosses() + 1);
+                user.setElo(user.getElo() - 5);
+            }
+        }
+
+        getUserRepo().updateUserStats(user.toUserStats(), user.getId());
 
         return new Response(
                 HttpStatus.OK,
@@ -89,6 +86,7 @@ public class BattleController extends Controller {
 
     /**
      * GET /stats
+     *
      * @param userLogin
      * @return
      */
@@ -113,6 +111,7 @@ public class BattleController extends Controller {
 
     /**
      * GET /scores
+     *
      * @return
      */
     public Response getScores() {

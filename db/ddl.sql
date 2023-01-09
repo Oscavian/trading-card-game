@@ -19,7 +19,7 @@ create table if not exists public.users
     password varchar(512)       not null,
     bio      text,
     image    text,
-    elo      integer default 0
+    elo      integer default 100
         constraint check_elo_not_negative
             check (elo >= 0),
     wins     integer default 0

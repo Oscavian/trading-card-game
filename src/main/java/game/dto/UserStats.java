@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserStats {
+public class UserStats implements Comparable<UserStats> {
 
     @JsonAlias({"Name"})
     @JsonProperty("Name")
@@ -18,7 +18,7 @@ public class UserStats {
 
     @JsonAlias({"Elo"})
     @JsonProperty("Elo")
-    private int elo;
+    private Integer elo;
 
     @JsonAlias({"Wins"})
     @JsonProperty("Wins")
@@ -29,4 +29,9 @@ public class UserStats {
     private int losses;
 
     public UserStats(){}
+
+    @Override
+    public int compareTo(UserStats stats) {
+        return getElo().compareTo(stats.getElo());
+    }
 }

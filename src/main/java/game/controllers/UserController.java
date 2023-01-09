@@ -121,7 +121,7 @@ public class UserController extends Controller {
         try {
             UserData userData = getObjectMapper().readValue(body, UserData.class);
 
-            if (getUserRepo().updateUser(userData, username)) {
+            if (getUserRepo().updateUserData(userData, username)) {
                 return new Response(
                         HttpStatus.OK,
                         ContentType.JSON,

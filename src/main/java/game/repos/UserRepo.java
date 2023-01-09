@@ -44,6 +44,10 @@ public class UserRepo extends Repository<UUID, User> {
         checkCache();
         var list = new ArrayList<UserStats>();
         getCacheService().getUuidUserCache().values().forEach((user -> list.add(user.toUserStats())));
+
+        Collections.sort(list);
+        Collections.reverse(list);
+
         return list;
     }
 
@@ -77,7 +81,7 @@ public class UserRepo extends Repository<UUID, User> {
         return uuid;
     }
 
-    public boolean updateUser(UserData userData, String username) {
+    public boolean updateUserData(UserData userData, String username) {
 
         checkCache();
         User user = getCacheService().getUsernameUserCache().get(username);
@@ -107,6 +111,29 @@ public class UserRepo extends Repository<UUID, User> {
         }
         checkCache();
         return getCacheService().getUsernameUserCache().get(name);
+    }
+
+    public void updateUserStats(UserStats stats, UUID userid) {
+        checkCache();
+
+        User user = getCacheService().getUuidUserCache().get(userid);
+
+        if (user == null) {
+            return;
+        }
+
+        user.setElo(stats.getElo());
+        user.setWins(stats.getWins());
+        user.setLosses(stats.getLosses());
+
+        try {
+            getUserDao().update(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        refreshCache();
     }
 
     public UserData getUserDataByName(String name) {
