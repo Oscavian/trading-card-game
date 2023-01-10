@@ -6,17 +6,11 @@ import game.models.Card;
 import game.repos.CardRepo;
 import http.ContentType;
 import http.HttpStatus;
-import org.checkerframework.checker.units.qual.A;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import javax.xml.transform.OutputKeys;
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -39,6 +33,7 @@ public class TestCardController {
     }
 
     @Test
+    @DisplayName("Test getCards")
     void testGetCards() {
         //arrange
         when(cardRepo.getUserDeck("admin")).thenReturn(new ArrayList<>());
@@ -53,6 +48,7 @@ public class TestCardController {
     }
 
     @Test
+    @DisplayName("Test getUserDeck")
     void testGetDeck() {
         //arrange
         var deck = new ArrayList<Card>();
@@ -71,6 +67,7 @@ public class TestCardController {
     }
 
     @Test
+    @DisplayName("Test getUserDeck - No cards")
     void testGetDeckNoCards() {
         //arrange
         when(cardRepo.getUserDeck("admin")).thenReturn(new ArrayList<>());
@@ -85,6 +82,7 @@ public class TestCardController {
     }
 
     @Test
+    @DisplayName("Test putDeck")
     void testPutDeck() throws JsonProcessingException {
         when(cardRepo.setUserDeck(any(List.class), any(String.class))).thenReturn(true);
 
@@ -102,6 +100,7 @@ public class TestCardController {
     }
 
     @Test
+    @DisplayName("Test putDeck for BAD REQUEST")
     void testPutDeckInvalidCardAmount() throws JsonProcessingException {
         var ids = new ArrayList<UUID>();
         ids.add(UUID.randomUUID());
@@ -117,6 +116,7 @@ public class TestCardController {
     }
 
     @Test
+    @DisplayName("Test putDeck for FORBIDDEN")
     void testPutDeckInvalidCard() throws JsonProcessingException {
         when(cardRepo.setUserDeck(any(List.class), any(String.class))).thenReturn(false);
 
@@ -133,6 +133,7 @@ public class TestCardController {
     }
 
     @Test
+    @DisplayName("Test postPackage for CREATED")
     void testPostPackage() throws JsonProcessingException {
 
         when(cardRepo.createPackage(any(List.class))).thenReturn(true);
@@ -151,6 +152,7 @@ public class TestCardController {
     }
 
     @Test
+    @DisplayName("Test postPackage for CONFLICT")
     void testPostPackageConflict() throws JsonProcessingException {
 
         when(cardRepo.createPackage(any(List.class))).thenReturn(false);
@@ -169,6 +171,7 @@ public class TestCardController {
     }
 
     @Test
+    @DisplayName("Test postPackage for BAD REQUEST")
     void testPostPackageWrongSize() throws JsonProcessingException {
 
         when(cardRepo.createPackage(any(List.class))).thenReturn(false);
@@ -185,6 +188,7 @@ public class TestCardController {
     }
 
     @Test
+    @DisplayName("Test postTransactionsPackages for OK")
     void testPostTransactionsPackages() throws JsonProcessingException {
         var list = new ArrayList<Card>();
         UUID uuid = UUID.randomUUID();
@@ -199,6 +203,7 @@ public class TestCardController {
     }
 
     @Test
+    @DisplayName("Test postTransactions for FORBIDDEN")
     void testPostTransactionsNoMoney() {
         when(cardRepo.aquirePackage("admin")).thenReturn(null);
 
@@ -210,6 +215,7 @@ public class TestCardController {
     }
 
     @Test
+    @DisplayName("Test postTransactions for NOT FOUND")
     void testPostTransactionsNoPackages() {
         when(cardRepo.aquirePackage("admin")).thenReturn(new ArrayList<>());
 

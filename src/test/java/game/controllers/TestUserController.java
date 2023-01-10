@@ -35,7 +35,7 @@ public class TestUserController {
     }
 
     @Test
-    @DisplayName("Test GET /users for OK")
+    @DisplayName("Test getUsers for OK")
     void testGetUsers() {
         //arrange
         var list = new ArrayList<UserData>();
@@ -52,6 +52,7 @@ public class TestUserController {
     }
 
     @Test
+    @DisplayName("Test getUserByName for OK")
     void testGetUserByNameValidName() {
         //arrange
         when(m_userRepo.getUserDataByName("admin")).thenReturn(new UserData("admin", "hi", ":)"));
@@ -71,6 +72,7 @@ public class TestUserController {
     }
 
     @Test
+    @DisplayName("Test registerUser for CONFLICT")
     void testRegisterUserValidBodyDuplicateUsername() {
         //arrange
         String body = "{\"Username\":\"admin\",\"Password\":\"123456\"}";
@@ -84,6 +86,7 @@ public class TestUserController {
     }
 
     @Test
+    @DisplayName("Test registerUser for CREATED")
     void testRegisterUserValidBody() {
         //arrange
         String body = "{\"Username\":\"admin\",\"Password\":\"123456\"}";
@@ -98,6 +101,7 @@ public class TestUserController {
     }
 
     @Test
+    @DisplayName("Test registerUser for BAD REQUEST")
     void testRegisterUserInvalidPayload() {
         //arrange
         String body = "{\"name\":\"admin\",\"pass\":\"123456\"}";
@@ -108,6 +112,7 @@ public class TestUserController {
     }
 
     @Test
+    @DisplayName("Test updateUSer for OK")
     void testUpdateUserValidPayload() {
         //arrange
         String body = "{" +
@@ -126,6 +131,7 @@ public class TestUserController {
     }
 
     @Test
+    @DisplayName("Test updateUser for NOT_FOUND")
     void testUpdateUserInvalidUser() {
         String body = "{" +
                 "\"Name\":\"admin\"," +
@@ -147,6 +153,7 @@ public class TestUserController {
     }
 
     @Test
+    @DisplayName("Test updateUser for BAD REQUEST")
     void testUpdateUserInvalidPayload() {
         //arrange
         String body = "{" +
@@ -161,6 +168,7 @@ public class TestUserController {
     }
 
     @Test
+    @DisplayName("Test loginUser for OK")
     void testLoginUserValidUser() {
         //arrange
         String body = "{\"Username\":\"admin\",\"Password\":\"123456\"}";
@@ -176,6 +184,7 @@ public class TestUserController {
     }
 
     @Test
+    @DisplayName("Test loginUser for UNAUTHORIZED")
     void testLoginUserInalidUser() {
         //arrange
         String body = "{\"Username\":\"admin\",\"Password\":\"654321\"}";
@@ -189,6 +198,7 @@ public class TestUserController {
     }
 
     @Test
+    @DisplayName("Test loginUser for BAD REQUEST")
     void testLoginUserInvalidPayload() {
         //arrange
         String body = "{\"bla\":\"admin\",\"blub\":\"123456\"}";
@@ -199,7 +209,8 @@ public class TestUserController {
     }
 
     @Test
-    void test_parameterValidation() {
+    @DisplayName("Test UserController parameter validation")
+    void testUserControllerparameterValidation() {
         //act & assert
         assertDoesNotThrow(() -> userController.registerUser(null));
 
