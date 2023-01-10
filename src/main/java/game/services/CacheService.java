@@ -8,52 +8,47 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 @Getter(AccessLevel.PUBLIC)
 @Setter(AccessLevel.PACKAGE)
 public class CacheService {
-    private final Map<UUID, User> uuidUserCache = Collections.synchronizedMap(new HashMap<>());
-    private final Map<String, User> usernameUserCache = Collections.synchronizedMap(new HashMap<>());
-    private final Map<UUID, Card> uuidCardCache = Collections.synchronizedMap(new HashMap<>());
-    private final Map<UUID, StackDeckEntry> uuidStackEntryCache = Collections.synchronizedMap(new HashMap<>());
-    private final Map<UUID, StackDeckEntry> uuidDeckEntryCache = Collections.synchronizedMap(new HashMap<>());
+    private final Map<UUID, User> uuidUserCache = new ConcurrentHashMap<>();
+    private final Map<String, User> usernameUserCache = new ConcurrentHashMap<>();
+    private final Map<UUID, Card> uuidCardCache = new ConcurrentHashMap<>();
+    private final Map<UUID, StackDeckEntry> uuidStackEntryCache = new ConcurrentHashMap<>();
+    private final Map<UUID, StackDeckEntry> uuidDeckEntryCache = new ConcurrentHashMap<>();
 
-    public synchronized void refreshUuidUserCache(HashMap<UUID, User> newCache) {
+    public void refreshUuidUserCache(HashMap<UUID, User> newCache) {
 
         refresh(newCache, uuidUserCache);
-        System.out.println("Cache<UUID, User> refreshed! Contents: \n" + uuidUserCache);
-
+        //System.out.println("Cache<UUID, User> refreshed! Contents: \n" + uuidUserCache);
     }
 
-    public synchronized void refreshUsernameUserCache(HashMap<String, User> newCache) {
+    public void refreshUsernameUserCache(HashMap<String, User> newCache) {
         refresh(newCache, usernameUserCache);
-        System.out.println("Cache<Username, User> refreshed! Contents: \n" + usernameUserCache);
+        //System.out.println("Cache<Username, User> refreshed! Contents: \n" + usernameUserCache);
     }
 
-    public synchronized void refreshUuidCardCache(HashMap<UUID, Card> newCache) {
+    public void refreshUuidCardCache(HashMap<UUID, Card> newCache) {
         refresh(newCache, uuidCardCache);
         //System.out.println("Cache<UUID, Card> refreshed! Contents: \n" + uuidCardCache);
     }
 
-    public synchronized void refreshStackEntryCache(HashMap<UUID, StackDeckEntry> newCache) {
+    public void refreshStackEntryCache(HashMap<UUID, StackDeckEntry> newCache) {
         refresh(newCache, uuidStackEntryCache);
         //System.out.println("Cache<UUID, StackEntry> refreshed! Contents: \n" + uuidStackEntryCache);
     }
 
-    public synchronized void refreshDeckEntryCache(HashMap<UUID, StackDeckEntry> newCache) {
+    public void refreshDeckEntryCache(HashMap<UUID, StackDeckEntry> newCache) {
 
         refresh(newCache, uuidDeckEntryCache);
         //System.out.println("Cache<UUID, DeckEntry> refreshed! Contents: \n" + uuidDeckEntryCache);
-
-
     }
 
-    protected  <ID, T> void refresh(Map<ID, T> newCache, Map<ID, T> oldCache) {
+    protected <ID, T> void refresh(Map<ID, T> newCache, Map<ID, T> oldCache) {
 
-        oldCache.clear();
-        oldCache.putAll(newCache);
-        /*
         //prune deleted entries
         if (!newCache.keySet().equals(oldCache.keySet())) {
             List<ID> oldKeys = new ArrayList<>();
@@ -75,6 +70,5 @@ public class CacheService {
                             u1.equals(u2) ? u1 : u2
             );
         }
-         */
     }
 }
