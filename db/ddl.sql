@@ -38,7 +38,7 @@ create table if not exists public.cards
 (
     uuid   uuid default uuid_generate_v4() primary key,
     name   varchar(255) not null,
-    damage float        not null
+    damage double precision        not null
 );
 
 create table if not exists public.decks
@@ -81,7 +81,7 @@ create table if not exists public.tradings
     user_offering  uuid,
     card_offered   uuid,
     type           varchar(255),
-    minimum_damage int,
+    minimum_damage double precision,
     constraint fk_tradings_users
         foreign key (user_offering)
             references users (uuid),
@@ -94,6 +94,7 @@ create table if not exists public.packages
 (
     uuid  uuid,
     owner uuid,
+    creation timestamp default CURRENT_TIMESTAMP,
     primary key (uuid),
     constraint fk_packages_users
         foreign key (owner)
@@ -116,6 +117,7 @@ create table if not exists public.packages_cards
             on delete cascade
 );
 
+/*
 create table if not exists public.battle_logs
 (
     battle_uuid uuid,
@@ -132,6 +134,7 @@ create table if not exists public.battle_logs
             references users (uuid)
             on delete no action
 );
+*/
 
 alter table public.users
     owner to swe1user;
@@ -149,9 +152,6 @@ alter table public.decks
     owner to swe1user;
 
 alter table public.stacks
-    owner to swe1user;
-
-alter table public.battle_logs
     owner to swe1user;
 
 alter table public.tradings

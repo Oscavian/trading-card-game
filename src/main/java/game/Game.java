@@ -60,8 +60,7 @@ public class Game implements ServerApp {
                                 new DeckEntryDao(databaseService.getConnection()),
                                 new PackageDao(databaseService.getConnection()),
                                 getCacheService()
-                        ),
-                        getAuthService()
+                        )
                 )
         );
         setBattleController(
