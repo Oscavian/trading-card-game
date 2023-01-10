@@ -29,8 +29,6 @@ public class Game implements ServerApp {
     private CardController cardController;
     private BattleController battleController;
 
-
-
     //SERVICES
     private DatabaseService databaseService = new DatabaseService();
     private AuthService authService = new AuthService();
@@ -136,7 +134,7 @@ public class Game implements ServerApp {
         }
 
         if (path.matches("/users/" + UUID_REGEX + "/?")) {
-            return null;
+            return new Response(HttpStatus.NOT_FOUND);
         }
 
         if (path.matches("/cards/?")) {
@@ -156,7 +154,7 @@ public class Game implements ServerApp {
         }
 
         if (path.matches("/tradings/?")) {
-            return null;
+            return new Response(HttpStatus.NOT_FOUND);
         }
 
         return new Response(
@@ -188,11 +186,11 @@ public class Game implements ServerApp {
         }
 
         if (path.matches("/tradings/?")) {
-            return null;
+            return new Response(HttpStatus.NOT_FOUND);
         }
 
         if (path.matches("/tradings/" + UUID_REGEX + "/?")) {
-            return null;
+            return new Response(HttpStatus.NOT_FOUND);
         }
 
         return new Response(
@@ -230,7 +228,7 @@ public class Game implements ServerApp {
     private Response handleDELETE(Request request) {
 
         if (request.getPathname().matches("/tradings/" + UUID_REGEX + "/?")) {
-            return null;
+            return new Response(HttpStatus.NOT_FOUND);
         }
 
         return new Response(
