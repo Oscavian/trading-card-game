@@ -1,6 +1,25 @@
 @startuml
 
-User -> Deck
-User -> Stack
-
+actor Actor
+participant Server
+participant Controller
+participant Repository
+participant DataAccessObject
+database Database
+autonumber
+    Actor -> Server: HTTP Request
+    Server -> Server: Parse request
+    Server -> Controller: call Controller\nwith request params
+    Controller -> Controller: do logic
+    Controller -> Repository: call repository logic
+    Repository -> Repository: do logic
+    Repository -> DataAccessObject: call dao to\nread/write data
+    DataAccessObject -> DataAccessObject: build SQL statements
+    DataAccessObject -> Database: execute\nprepared statements
+    Database --> DataAccessObject: return ResultSet
+    DataAccessObject -> Repository: return parsed\nDatabase result
+    Repository --> Controller: return requested data
+    Controller -> Controller: build response
+    Controller --> Server: return response
+    Server --> Actor: HTTP response
 @enduml
