@@ -3,6 +3,9 @@
 This HTTP/REST-based server is built to be a platform for trading and battling with and
 against each other in a magical card-game world.
 
+## Protocol
+The protocol can be found at `docs/protocol.md`
+
 # Deployment
 ## PostgreSQL DB
 
