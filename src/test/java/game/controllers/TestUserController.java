@@ -1,5 +1,4 @@
 package game.controllers;
-import game.controllers.UserController;
 import game.dto.UserCredentials;
 import game.dto.UserData;
 import game.repos.UserRepo;

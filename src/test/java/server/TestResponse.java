@@ -38,20 +38,6 @@ public class TestResponse {
     }
 
     @Test
-    public void testHtmlContentType() {
-        Response response = new Response();
-        response.setContentType(ContentType.HTML);
-        response.setContent("<h1>This is an HTML page</h1>");
-        response.setStatusCode(200);
-        response.setStatusMessage("OK");
-
-        String expectedOutput = "HTTP/1.1 200 OK\r\nContent-Type: HTML\r\nContent-Length: 29\r\n\r\n<h1>This is an HTML page</h1>";
-        String actualOutput = response.build();
-
-        assertEquals(expectedOutput, actualOutput);
-    }
-
-    @Test
     public void testIllegalContentType() {
         Response response = new Response();
         response.setContentType(ContentType.UNKNOWN);

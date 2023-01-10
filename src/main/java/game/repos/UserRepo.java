@@ -67,7 +67,7 @@ public class UserRepo extends Repository<UUID, User> {
         UUID uuid = null;
 
         //check for duplicate username
-        if (getUserDataByName(credentials.getUsername()) != null) {
+        if (getByName(credentials.getUsername()) != null) {
             return null;
         }
 
