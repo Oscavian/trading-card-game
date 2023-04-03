@@ -1,5 +1,5 @@
 # Design
-My version of the monster-trading-card-com.oscavian.tradingcardgame.game is (who would've guessed) a multithreaded REST-based HTTP-Server that acts like an API.
+My version of the monster trading card game is (who would've guessed) a multithreaded REST-based HTTP-Server that acts like an API.
 Requests are parsed by the Server, then handed to the Game, which calls the associated Controller, which further calls the respective Repositories.
 The Repositories encapsulate the database access code implemented as Data Access Objects (DAOs).
 Due to injecting dependencies, unit testing was fairly easy.

@@ -1,0 +1,11 @@
+FROM postgres
+
+ARG PW
+ARG USER
+ARG DB
+ENV POSTGRES_USER $USER
+ENV POSTGRES_PASSWORD $PW
+ENV POSTGRES_DB $DB
+
+COPY init.sql /docker-entrypoint-initdb.d/
+

@@ -1,5 +1,3 @@
-CREATE database swe1db;
-GRANT ALL PRIVILEGES ON DATABASE swe1db TO swe1user;
 create extension if not exists "uuid-ossp";
 
 drop table if exists users;
@@ -136,23 +134,23 @@ create table if not exists public.battle_logs
 );
 */
 
-alter table public.users
-    owner to swe1user;
+/*alter table public.users
+    owner to swen1user;
 
 alter table public.cards
-    owner to swe1user;
+    owner to swen1user;
 
 alter table public.packages
-    owner to swe1user;
+    owner to swen1user;
 
 alter table public.packages_cards
-    owner to swe1user;
+    owner to swen1user;
 
 alter table public.decks
-    owner to swe1user;
+    owner to swen1user;
 
 alter table public.stacks
-    owner to swe1user;
+    owner to swen1user;
 
 alter table public.tradings
-    owner to swe1user;
+    owner to swen1user;*/
