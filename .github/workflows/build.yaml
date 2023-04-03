@@ -1,4 +1,4 @@
-name: Build mtcg
+name: Build
 
 on:
   push:

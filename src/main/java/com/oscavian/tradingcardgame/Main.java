@@ -6,14 +6,15 @@ import com.oscavian.tradingcardgame.server.Server;
 import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        System.out.println("Welcome to the magic trading card game.");
         Game game = new Game();
         Server server = new Server(game, 10001);
 
         try {
             server.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.exit(1);
         }
 
     }

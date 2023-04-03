@@ -33,6 +33,8 @@ public class Server {
 
     public void start() throws IOException {
         setServerSocket(new ServerSocket(getPort()));
+        System.out.println("Game server started successfully!\n" +
+                "Accepting connections...");
         while(true) {
             try {
                 Socket clientSocket = getServerSocket().accept();

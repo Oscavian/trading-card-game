@@ -19,6 +19,8 @@ import com.oscavian.tradingcardgame.server.Request;
 import com.oscavian.tradingcardgame.server.Response;
 import com.oscavian.tradingcardgame.server.ServerApp;
 
+import java.io.IOException;
+
 @Setter(AccessLevel.PRIVATE)
 @Getter
 public class Game implements ServerApp {
@@ -39,7 +41,7 @@ public class Game implements ServerApp {
     @Getter(AccessLevel.PRIVATE)
     private String userLogin;
 
-    public Game() {
+    public Game() throws IOException {
         setUserController(
                 new UserController(
                         new UserRepo(
