@@ -27,9 +27,13 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-      - name: Upload artifacts
+      - name: Create staging directory
         run: mkdir staging && cp target/*.jar staging
+
+      - name: Get current date
+        run: echo "TODAY=$(date +%Y-%m-%d-%H%M)" >> $GITHUB_ENV
+
       - uses: actions/upload-artifact@v3
         with:
-          name: Package
+          name: Package_trading-card-game_${{ env.TODAY }}
           path: staging
