@@ -5,19 +5,61 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53629a6e-3129-4c8a-bd4f-5d57cefae739" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/game/dao/TradingDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.github/workflows/build.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/ddl.sql" beforeDir="false" afterPath="$PROJECT_DIR$/db/ddl.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/mtcg-api.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/mtcg-api.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/protocol.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/protocol.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/game/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/game/controllers/CardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/controllers/CardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/game/models/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/models/Card.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/game/models/TradingDeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/models/TradingDeal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/http/HttpStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/http/HttpStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/game/TestGame.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/game/controllers/TestCardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/game/controllers/TestCardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/game/controllers/TestUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/game/controllers/TestUserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/controllers/BattleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/controllers/BattleController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/controllers/CardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/controllers/CardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/controllers/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/controllers/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/controllers/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/dao/CardDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/dao/CardDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/dao/Dao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/dao/Dao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/dao/DeckEntryDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/dao/DeckEntryDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/dao/PackageDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/dao/PackageDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/dao/StackEntryDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/dao/StackEntryDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/dao/UserDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/dto/UserCredentials.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/dto/UserCredentials.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/dto/UserData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/dto/UserData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/dto/UserStats.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/dto/UserStats.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/models/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/models/Card.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/models/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/models/Deck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/models/DeckEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/models/DeckEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/models/Package.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/models/Package.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/models/StackDeckEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/models/StackDeckEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/models/TradingDeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/models/TradingDeal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/models/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/repos/CardRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/repos/CardRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/repos/Repository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/repos/Repository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/repos/UserRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/repos/UserRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/services/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/services/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/services/BattleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/services/BattleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/services/CacheService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/services/CacheService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/services/DatabaseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/services/DatabaseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/utils/AttackModifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/utils/AttackModifier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/utils/BattleResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/utils/BattleResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/utils/CardType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/utils/CardType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/utils/Element.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/game/utils/Element.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/http/ContentType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/http/ContentType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/http/HttpMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/http/HttpMethod.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/http/HttpStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/http/HttpStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/server/Request.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/RequestHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/server/RequestHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/server/Response.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/ServerApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/oscavian/tradingcardgame/server/ServerApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/game/controllers/TestCardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/oscavian/tradingcardgame/game/controllers/TestCardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/game/controllers/TestUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/oscavian/tradingcardgame/game/controllers/TestUserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/game/repos/TestUserRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/oscavian/tradingcardgame/game/repos/TestUserRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/game/services/TestCacheService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/oscavian/tradingcardgame/game/services/TestCacheService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/server/TestRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/oscavian/tradingcardgame/server/TestRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/server/TestResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/oscavian/tradingcardgame/server/TestResponse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,13 +77,22 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="paths/game" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenRunner">
+    <option name="environmentProperties">
+      <map>
+        <entry key="POSTGRES_PASSWORD" value="swe1pw" />
+        <entry key="POSTGRES_URL" value="localhost:5431/swe1db" />
+        <entry key="POSTGRES_USER" value="swe1user" />
+      </map>
+    </option>
   </component>
   <component name="ProjectId" id="2EhoanRAY6E3JYTZmDB1tvsHfSv" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -55,15 +106,37 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/oskar/repos/trading-card-game",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+    "settings.editor.selected.configurable": "reference.settings.project.maven.runner",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.TestCardController">
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <envs>
+        <env name="POSTGRES_URL" value="localhost:5431/swe1db" />
+        <env name="POSTGRES_PASSWORD" value="swe1pw" />
+        <env name="POSTGRES_USER" value="swe1user" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="com.oscavian.tradingcardgame.Main" />
+      <module name="trading-card-game" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.oscavian.tradingcardgame.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="All in trading-card-game" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="trading-card-game" />
       <option name="PACKAGE_NAME" value="" />
@@ -76,29 +149,13 @@
       <module name="trading-card-game" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="game.controllers.*" />
+          <option name="PATTERN" value="com.oscavian.tradingcardgame.game.controllers.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="game.controllers" />
-      <option name="MAIN_CLASS_NAME" value="game.controllers.TestCardController" />
+      <option name="MAIN_CLASS_NAME" value="com.oscavian.tradingcardgame.game.controllers.TestCardController" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TestCardController.testPostTransactionsNoMoney" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="trading-card-game" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="game.controllers.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="game.controllers" />
-      <option name="MAIN_CLASS_NAME" value="game.controllers.TestCardController" />
-      <option name="METHOD_NAME" value="testPostTransactionsNoMoney" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -107,48 +164,46 @@
       <module name="trading-card-game" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="game.controllers.*" />
+          <option name="PATTERN" value="com.oscavian.tradingcardgame.game.controllers.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="game.controllers" />
-      <option name="MAIN_CLASS_NAME" value="game.controllers.TestCardController" />
+      <option name="MAIN_CLASS_NAME" value="com.oscavian.tradingcardgame.game.controllers.TestCardController" />
       <option name="METHOD_NAME" value="testPostTransactionsNoPackages" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestCardController.testPostTransactionsPackages" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="com.oscavian.tradingcardgame in trading-card-game" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="trading-card-game" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="game.controllers.*" />
+          <option name="PATTERN" value="com.oscavian.tradingcardgame.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="game.controllers" />
-      <option name="MAIN_CLASS_NAME" value="game.controllers.TestCardController" />
-      <option name="METHOD_NAME" value="testPostTransactionsPackages" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="com.oscavian.tradingcardgame" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.Main" />
+      <item itemvalue="JUnit.com.oscavian.tradingcardgame in trading-card-game" />
       <item itemvalue="JUnit.All in trading-card-game" />
       <item itemvalue="JUnit.TestCardController" />
-      <item itemvalue="JUnit.TestCardController.testPostTransactionsNoMoney" />
       <item itemvalue="JUnit.TestCardController.testPostTransactionsNoPackages" />
-      <item itemvalue="JUnit.TestCardController.testPostTransactionsPackages" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.com.oscavian.tradingcardgame in trading-card-game" />
+        <item itemvalue="JUnit.All in trading-card-game" />
         <item itemvalue="JUnit.TestCardController" />
         <item itemvalue="JUnit.TestCardController.testPostTransactionsNoPackages" />
-        <item itemvalue="JUnit.TestCardController.testPostTransactionsNoMoney" />
-        <item itemvalue="JUnit.TestCardController.testPostTransactionsPackages" />
-        <item itemvalue="JUnit.All in trading-card-game" />
       </list>
     </recent_temporary>
   </component>
@@ -164,6 +219,7 @@
       <workItem from="1663141146932" duration="807000" />
       <workItem from="1663142214776" duration="4443000" />
       <workItem from="1663146671608" duration="61000" />
+      <workItem from="1680523797093" duration="4163000" />
     </task>
     <servers />
   </component>
