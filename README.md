@@ -1,5 +1,5 @@
 <div align="center">
-    <h2>Monster Trading Card Game</h2>
+    <h1>Monster Trading Card Game</h1>
     <p>This REST-based server is built to be a platform for trading and battling with and
 against each other in a magical card game world.
 
@@ -9,7 +9,7 @@ This project was the semester project in the third semester of my cs studies.</p
 </div>
 
 
-# Design
+## Design
 My version of the monster trading card game is a multithreaded REST-based HTTP-Server that acts like an API.
 Requests are parsed by the Server, then handed to the Game, which calls the associated Controller, which further calls the respective Repositories.
 The Repositories encapsulate the database access code implemented as Data Access Objects (DAOs).
